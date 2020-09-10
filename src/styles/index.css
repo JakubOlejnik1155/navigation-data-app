@@ -17,3 +17,6 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+.MuiListItemIcon-root{
+  min-width: 10px !important;
+}

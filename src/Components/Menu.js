@@ -10,7 +10,15 @@ import BoatIcon from '../images/boat.png';
 import WeatherIcon from '../images/wind.png';
 import MapIcon from '../images/maps-and-location.png';
 import TripIcon from '../images/track.png';
-import { makeStyles } from '@material-ui/core';
+import { makeStyles, withStyles } from '@material-ui/core';
+
+
+import ListItem from '@material-ui/core/ListItem';
+import ListItemIcon from '@material-ui/core/ListItemIcon';
+import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
+import ListItemText from '@material-ui/core/ListItemText';
+import Switch from '@material-ui/core/Switch';
+import BrightnessMediumRoundedIcon from '@material-ui/icons/BrightnessMediumRounded';
 
 
 const MenuList = styled.div`
@@ -25,15 +33,33 @@ const CRSpan = styled.span`
   font-family: Poppins, sans-serif;
   font-size: 12px;
   text-align: center;
-  margin-top: auto;
   color: ${props => props.state.isNightModeOn ? theme.light : theme.dark}
 
 `;
 const useStyles = makeStyles(()=>({
   light: {
       backgroundColor: theme.light,
+  },
+  mode: {
+    '& .MuiTypography-root':{
+      fontFamily: 'Poppins, sans-serif',fontSize: '14px',
+      margin: '0 20px 0 5px'
+    }
   }
 }))
+const ModeSwitch = withStyles({
+  switchBase: {
+    color: theme.dark,
+    '&$checked': {
+      color: theme.red,
+    },
+    '&$checked + $track': {
+      backgroundColor: theme.red,
+    },
+  },
+  checked: {},
+  track: {},
+})(Switch);
 
 const Menu = ({state, setState}) => {
 
@@ -62,7 +88,27 @@ const Menu = ({state, setState}) => {
           <MenuLink link='/my-trips' text="My Trips" icon={TripIcon} state={state} />
           <Divider className={state.isNightModeOn ? classes.light : ""}/>
         </List>
+
+        <List style={{marginTop: 'auto'}}>
+          <ListItem>
+            <ListItemIcon >
+              <BrightnessMediumRoundedIcon style={state.isNightModeOn ? {fill: theme.light} : {fill: theme.dark}}/>
+            </ListItemIcon>
+            <ListItemText className={classes.mode}id="switch-list-label-mode" primary="Night Mode" style={state.isNightModeOn ? { color: theme.light} : { color: theme.dark}}/>
+            <ListItemSecondaryAction>
+              <ModeSwitch
+                edge="end"
+                onChange={ () => setState({...state, isNightModeOn: !state.isNightModeOn})}
+                checked={state.isNightModeOn ? true : false}
+                inputProps={{ 'aria-labelledby': 'switch-list-label-mode' }}
+              />
+            </ListItemSecondaryAction>
+          </ListItem>
+          <Divider className={state.isNightModeOn ? classes.light : ""} />
+        </List>
+
         <CRSpan state={state}>©:Jakub Olejnik 2020 / v1.0</CRSpan>
+
       </MenuList>
     </SwipeableDrawer>
   );
