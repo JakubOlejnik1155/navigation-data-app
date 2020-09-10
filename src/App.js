@@ -14,7 +14,7 @@ function App() {
 
   const [state, setState] = useState({
     isMenuOpened: false,
-    isNightModeOn: false,
+    isNightModeOn: true,
     isTripActive: false,
   });
 
