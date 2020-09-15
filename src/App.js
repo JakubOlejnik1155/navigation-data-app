@@ -1,8 +1,9 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import NavBar from './Components/NavBar';
 import styled from 'styled-components';
 import { theme } from './data/styleThemes';
 import AppContent from './Components/AppContent';
+import { get } from 'idb-keyval';
 
 const AppContainer = styled.div`
     width: 100%;
@@ -18,6 +19,14 @@ function App() {
     isNightModeOn: false,
     isTripActive: false,
   });
+
+  useEffect(() => {
+    async function ReadNightMode() {
+      if (await get('nightMode') === true) setState({ ...state, isNightModeOn: true })
+    }
+    ReadNightMode();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
 
 
   return (

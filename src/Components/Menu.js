@@ -3,6 +3,7 @@ import SwipeableDrawer from '@material-ui/core/SwipeableDrawer';
 import styled from 'styled-components';
 import List from '@material-ui/core/List';
 import Divider from '@material-ui/core/Divider';
+import { set } from 'idb-keyval';
 
 import { theme } from '../data/styleThemes';
 import MenuLink from './MenuLink';
@@ -99,7 +100,13 @@ const Menu = ({state, setState}) => {
             <ListItemSecondaryAction>
               <ModeSwitch
                 edge="end"
-                onChange={ () => setState({...state, isNightModeOn: !state.isNightModeOn})}
+                onChange={ () => {
+                  if(state.isNightModeOn)
+                    set("nightMode", false);
+                  else if (!state.isNightModeOn)
+                    set("nightMode", true);
+                  setState({...state, isNightModeOn: !state.isNightModeOn});
+                }}
                 checked={state.isNightModeOn ? true : false}
                 inputProps={{ 'aria-labelledby': 'switch-list-label-mode' }}
               />
