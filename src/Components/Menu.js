@@ -11,7 +11,8 @@ import WeatherIcon from '../images/wind.png';
 import MapIcon from '../images/maps-and-location.png';
 import TripIcon from '../images/track.png';
 import { makeStyles, withStyles } from '@material-ui/core';
-
+import Wifi from '../images/wifi.svg';
+import NoWifi from '../images/no-wifi.svg';
 
 import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
@@ -106,9 +107,12 @@ const Menu = ({state, setState}) => {
           </ListItem>
           <Divider className={state.isNightModeOn ? classes.light : ""} />
         </List>
-
-        <CRSpan state={state}>©:Jakub Olejnik 2020 / v1.0</CRSpan>
-
+        <CRSpan state={state}>©:Jakub Olejnik 2020 / v1.0 {navigator.onLine ? (
+                <img src={Wifi} alt="wifi"  style={{width: '20px', height: '20px', marginBottom: '-5px'}}/>
+              ) : (
+                <img src={NoWifi} alt="no-wifi" style={{width: '20px', height: '20px', marginBottom: '-5px'}}/>
+              )}
+        </CRSpan>
       </MenuList>
     </SwipeableDrawer>
   );

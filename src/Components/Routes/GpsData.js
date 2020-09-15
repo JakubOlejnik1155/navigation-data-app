@@ -170,7 +170,7 @@ const GpsData = ({state}) => {
             setGpsData({
                 lat: position.coords.latitude,
                 lon: position.coords.longitude,
-                heading: position.coords.heading !== null ? position.coords.heading : '000',
+                heading: (position.coords.heading !== null) && (Math.round(position.coords.speed * 1.94384449 * 10) / 10 > 0.19) ? position.coords.heading : '000',
                 speed: position.coords.speed !== null ?  position.coords.speed : '0.0'
             })
         }
@@ -243,18 +243,16 @@ const GpsData = ({state}) => {
             ): (
                 <>
                     { permision === false ? (
-                            <Backdrop className={classes.backdrop} open={true}>
-                                <img src={Permission} alt="shield" style={{width: '90px', height: '90px', marginBottom: '15px'}}/>
-                                <span style={{ fontFamily: 'Poppins, sans-serif', fontSize: '24px' }}>No GPS permission</span>
-                                <p style={{ fontFamily: 'Poppins, sans-serif', fontSize: '18px', padding: '10px', textAlign: 'center' }}>Please change the gps settings to use the application</p>
-
-
-                            </Backdrop>
+                        <Backdrop className={classes.backdrop} open={true}>
+                            <img src={Permission} alt="shield" style={{width: '90px', height: '90px', marginBottom: '15px'}}/>
+                            <span style={{ fontFamily: 'Poppins, sans-serif', fontSize: '24px' }}>No GPS permission</span>
+                            <p style={{ fontFamily: 'Poppins, sans-serif', fontSize: '18px', padding: '10px', textAlign: 'center' }}>Please change the gps settings to use the application</p>
+                        </Backdrop>
                     ):(
-                                <Backdrop className={classes.backdrop} open={true}>
-                                    <span style={{fontFamily: 'Poppins, sans-serif', fontSize: '18px'}}>Waiting for the GPS signal</span>
-                                    <CircularProgress color="inherit" />
-                                </Backdrop>
+                        <Backdrop className={classes.backdrop} open={true}>
+                            <span style={{fontFamily: 'Poppins, sans-serif', fontSize: '18px'}}>Waiting for the GPS signal</span>
+                            <CircularProgress color="inherit" />
+                        </Backdrop>
                     )}
                 </>
 
