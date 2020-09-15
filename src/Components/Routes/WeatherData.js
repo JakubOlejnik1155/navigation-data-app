@@ -7,7 +7,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import Permission from '../../images/shield.svg';
 import ReplayRoundedIcon from '@material-ui/icons/ReplayRounded';
 import IconButton from '@material-ui/core/IconButton';
-
+import NoInternetConnectionIcon from '../../images/no-wifi.svg';
 
 const useStyles = makeStyles(() => ({
     backdrop: {
@@ -100,6 +100,15 @@ const ContentDepth = styled.span`
      font-family: Poppins, sans-serif;
      color: ${props => props.data.depth > 5 ? 'rgb(0,160,0)' : theme.red};
      font-size: 60px;
+`;
+const OfflineContainer = styled.div`
+    width: 100%;
+    height: 100%;
+    color: ${ props => props.state.isNightModeOn ?  theme.light : theme.dark};
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
 `;
 
 const WeatcherData = ({state}) => {
@@ -198,44 +207,54 @@ const WeatcherData = ({state}) => {
             <WindContainer
                 state={state}
             >
-                {permision === false ? (
-                    <Backdrop className={classes.backdrop} open={true}>
-                        <img src={Permission} alt="shield" style={{ width: '90px', height: '90px', marginBottom: '15px' }} />
-                        <span style={{ fontFamily: 'Poppins, sans-serif', fontSize: '24px' }}>No GPS permission</span>
-                        <p style={{ fontFamily: 'Poppins, sans-serif', fontSize: '18px', padding: '10px', textAlign: 'center' }}>Please change the gps settings to use the application</p>
-                    </Backdrop>
-                ) : (
+                {navigator.onLine ? (
                     <>
-                    {permision === null ? (
-                        <Backdrop className={classes.backdrop} open={true}>
-                            <span style={{ fontFamily: 'Poppins, sans-serif', fontSize: '18px' }}>Waiting for the GPS signal</span>
-                            <CircularProgress color="inherit" />
-                        </Backdrop>
-                    ) : (
-                        <>
-                        <Value
-                            state={state}>
-                            <Text state={state}>WS</Text>
-                            <Content state={state}> {weatherData.WS} <span style={{ fontSize: '30px' }}>knt</span></Content>
-                        </Value>
-                        <Value
-                            state={state}>
-                            <Text state={state}>WA</Text>
-                            <Content state={state}> {weatherData.WA}°</Content>
-                        </Value>
-                        <Value
-                            state={state}>
-                            <Text state={state}>tmp</Text>
-                            <Content state={state}> {weatherData.TMP}°C</Content>
-                        </Value>
-                        </>
-                    )}
+                        {permision === false ? (
+                            <Backdrop className={classes.backdrop} open={true}>
+                                <img src={Permission} alt="shield" style={{ width: '90px', height: '90px', marginBottom: '15px' }} />
+                                <span style={{ fontFamily: 'Poppins, sans-serif', fontSize: '24px' }}>No GPS permission</span>
+                                <p style={{ fontFamily: 'Poppins, sans-serif', fontSize: '18px', padding: '10px', textAlign: 'center' }}>Please change the gps settings to use the application</p>
+                            </Backdrop>
+                        ) : (
+                                <>
+                                    {permision === null ? (
+                                        <Backdrop className={classes.backdrop} open={true}>
+                                            <span style={{ fontFamily: 'Poppins, sans-serif', fontSize: '18px' }}>Waiting for the GPS signal</span>
+                                            <CircularProgress color="inherit" />
+                                        </Backdrop>
+                                    ) : (
+                                            <>
+                                                <Value
+                                                    state={state}>
+                                                    <Text state={state}>WS</Text>
+                                                    <Content state={state}> {weatherData.WS} <span style={{ fontSize: '30px' }}>knt</span></Content>
+                                                </Value>
+                                                <Value
+                                                    state={state}>
+                                                    <Text state={state}>WA</Text>
+                                                    <Content state={state}> {weatherData.WA}°</Content>
+                                                </Value>
+                                                <Value
+                                                    state={state}>
+                                                    <Text state={state}>tmp</Text>
+                                                    <Content state={state}> {weatherData.TMP}°C</Content>
+                                                </Value>
+                                            </>
+                                        )}
+                                </>
+                            )}
+                        {weatherData.lastReload !== '-' && <LastReload>last reload at: {new Date(weatherData.lastReload * 1000).getHours() + ':' + new Date(weatherData.lastReload * 1000).getMinutes()}</LastReload>}
+                        <IconButton aria-label="reload" className={classes.margin} onClick={NewWeatherFunction}>
+                            <ReplayRoundedIcon className={classes.reloadIcon} />
+                        </IconButton>
                     </>
+                ):(
+                    <OfflineContainer state={state}>
+                            <img src={NoInternetConnectionIcon} alt="no-internet-connection" style={{ width: '90px', height: '90px', marginBottom: '15px' }} />
+                            <p style={{ fontFamily: 'Poppins, sans-serif', fontSize: '18px' }}>You need to go online</p>
+                    </OfflineContainer>
                 )}
-                {weatherData.lastReload !== '-' && <LastReload>last reload at: {new Date(weatherData.lastReload * 1000).getHours() + ':' + new Date(weatherData.lastReload * 1000).getMinutes()}</LastReload>}
-                <IconButton aria-label="reload" className={classes.margin} onClick={NewWeatherFunction}>
-                    <ReplayRoundedIcon  className={classes.reloadIcon}/>
-                </IconButton>
+
             </WindContainer>
 
             <DepthContainer
