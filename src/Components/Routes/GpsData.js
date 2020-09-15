@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { theme } from '../../data/styleThemes';
-
+import formatcoords from 'formatcoords';
 
 const Container = styled.div`
     background-color: transparent;
@@ -86,8 +86,6 @@ const MAContent = styled.span`
      color: ${props => props.state.isNightModeOn ? theme.red : theme.dark};
      font-size: 40px;
 `;
-
-
 const GpsContainer = styled.div`
     // background-color: lightgreen;
     flex-grow: 1;
@@ -101,7 +99,6 @@ const GpsContent = styled.span`
     font-family: Poppins, sans-serif;
     color: ${props => props.state.isNightModeOn ? theme.red : theme.dark};
 `;
-
 const HeadingContainer = styled.div`
     background-color: transparent;
     border-radius: 5px;
@@ -125,7 +122,6 @@ const Heading = styled.span`
      color: ${props => props.state.isNightModeOn ? theme.red : theme.dark};
      font-size: 60px;
 `;
-
 const LogPlusTrip = styled.div`
     // background-color: lightgreen;
     flex-grow: 2;
@@ -136,33 +132,34 @@ const LogPlusTrip = styled.div`
 const GpsData = ({state}) => {
 
     const [gpsData, setGpsData] = useState(null);
-    // const [isGpsAllowed, setIsGpsAllowed] = useState(false);
+    const [permision, setPermision] = useState(null);
 
     useEffect(()=>{
        console.log('start gps tracking');
         let watch = null;
             if (navigator.geolocation) {
-                watch = navigator.geolocation.watchPosition(showPosition);
+                watch = navigator.geolocation.watchPosition(showPosition, errorGPS, {
+                    enableHighAccuracy: true,
+                    timeout: 5 * 1000, // 5 seconds
+                    maximumAge: 0
+                });
             } else {
+                errorGPS();
                 console.log("Geolocation is not supported by this browser.");
             }
 
+        function errorGPS(){
+           setPermision(false)
+        }
         function showPosition(position) {
+            setPermision(true)
             setGpsData({
                 lat: position.coords.latitude,
                 lon: position.coords.longitude,
                 heading: position.coords.heading !== null ? position.coords.heading : '000',
                 speed: position.coords.speed !== null ?  position.coords.speed : '0.0'
             })
-            console.info(position)
         }
-
-
-
-
-
-
-
        return ( () => {
            console.log("end tracking")
            navigator.geolocation.clearWatch(watch);
@@ -176,7 +173,6 @@ const GpsData = ({state}) => {
         <Container
             state={state}
         >
-            {/* <pre>{JSON.stringify(gpsData, undefined,2)}</pre> */}
             {gpsData !== null ? (
                 <>
                     <SogContainer
@@ -185,17 +181,17 @@ const GpsData = ({state}) => {
                         <SogPlusmax>
                             <Sog>
                                 <SogText state={state}>Sog</SogText>
-                                <SogContent state={state}>{gpsData.speed} <span style={{ fontSize: '30px' }}>knt</span></SogContent>
+                                <SogContent state={state}>{Math.round(gpsData.speed * 1.94384449 * 10)/10} <span style={{ fontSize: '30px' }}>knt</span></SogContent>
                             </Sog>
                             <MaxAvg state={state}>
                                 <MAContainer>
                                     <SogText state={state}>max</SogText>
-                                    <MAContent state={state}>{gpsData.speed} <span style={{ fontSize: '30px' }}>knt</span></MAContent>
+                                    <MAContent state={state}> _._ <span style={{ fontSize: '30px' }}>knt</span></MAContent>
 
                                 </MAContainer>
                                 <MAContainer>
                                     <SogText state={state}>avg</SogText>
-                                    <MAContent state={state}>{gpsData.speed} <span style={{ fontSize: '30px' }}>knt</span></MAContent>
+                                    <MAContent state={state}> _._ <span style={{ fontSize: '30px' }}>knt</span></MAContent>
 
                                 </MAContainer>
                             </MaxAvg>
@@ -204,38 +200,42 @@ const GpsData = ({state}) => {
                         <GpsContainer>
                             <SogText state={state}>Gps</SogText>
                             <GpsContent state={state}>
-                                {gpsData.lat} <br/>
-                                {gpsData.lon}
+                                {formatcoords(gpsData.lat, gpsData.lon).format('DDMMssX',{ latLonSeparator: '| ', decimalPlaces: 3 }).split('|')[0]} <br/>
+                                {formatcoords(gpsData.lat, gpsData.lon).format('DDMMssX',{ latLonSeparator: '| ', decimalPlaces: 3 }).split('|')[1]}
                             </GpsContent>
                         </GpsContainer>
                     </SogContainer>
-
                     <HeadingContainer
                         state={state}
                     >
                         <HeadingDiv>
                             <SogText state={state}>heading</SogText>
-                            <Heading state={state}> {gpsData.heading}°</Heading>
+                            <Heading state={state}> {Math.round(gpsData.heading)}°</Heading>
                         </HeadingDiv>
                         <LogPlusTrip>
 
                             <MAContainer>
                                 <SogText state={state}>log</SogText>
-                                <MAContent state={state}> -.- <span style={{ fontSize: '30px' }}>nm</span></MAContent>
+                                <MAContent state={state}> _._ <span style={{ fontSize: '30px' }}>nm</span></MAContent>
                             </MAContainer>
 
                             <MAContainer>
                                 <SogText state={state}>trip</SogText>
-                                <MAContent state={state}> -.- <span style={{ fontSize: '30px' }}>nm</span></MAContent>
+                                <MAContent state={state}> _._ <span style={{ fontSize: '30px' }}>nm</span></MAContent>
                             </MAContainer>
                         </LogPlusTrip>
                     </HeadingContainer>
                 </>
             ): (
+                <>
+                    { permision === false ? (
+                        <p>No GPS Permision</p>
+                    ):(
+                        <p>WEATING FOR GPS SIGNAL</p>
+                    )}
+                </>
 
-                <p>WEATING FOR GPS SIGNAL</p>
             )}
-
         </Container>
      );
 }
