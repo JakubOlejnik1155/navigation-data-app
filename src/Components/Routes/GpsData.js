@@ -2,6 +2,19 @@ import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { theme } from '../../data/styleThemes';
 import formatcoords from 'formatcoords';
+import Backdrop from '@material-ui/core/Backdrop';
+import CircularProgress from '@material-ui/core/CircularProgress';
+import { makeStyles } from '@material-ui/core/styles';
+import Permission from '../../images/shield.svg';
+
+const useStyles = makeStyles(() => ({
+    backdrop: {
+        zIndex: 999,
+        color: theme.light,
+        display: 'flex',
+        flexDirection: 'column'
+    },
+}));
 
 const Container = styled.div`
     background-color: transparent;
@@ -131,6 +144,7 @@ const LogPlusTrip = styled.div`
 
 const GpsData = ({state}) => {
 
+    const classes = useStyles();
     const [gpsData, setGpsData] = useState(null);
     const [permision, setPermision] = useState(null);
 
@@ -229,9 +243,18 @@ const GpsData = ({state}) => {
             ): (
                 <>
                     { permision === false ? (
-                        <p>No GPS Permision</p>
+                            <Backdrop className={classes.backdrop} open={true}>
+                                <img src={Permission} alt="shield" style={{width: '90px', height: '90px', marginBottom: '15px'}}/>
+                                <span style={{ fontFamily: 'Poppins, sans-serif', fontSize: '24px' }}>No GPS permission</span>
+                                <p style={{ fontFamily: 'Poppins, sans-serif', fontSize: '18px', padding: '10px', textAlign: 'center' }}>Please change the gps settings to use the application</p>
+
+
+                            </Backdrop>
                     ):(
-                        <p>WEATING FOR GPS SIGNAL</p>
+                                <Backdrop className={classes.backdrop} open={true}>
+                                    <span style={{fontFamily: 'Poppins, sans-serif', fontSize: '18px'}}>Waiting for the GPS signal</span>
+                                    <CircularProgress color="inherit" />
+                                </Backdrop>
                     )}
                 </>
 
