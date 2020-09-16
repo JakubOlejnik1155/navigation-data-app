@@ -116,6 +116,7 @@ const WeatcherData = ({state}) => {
     const classes = useStyles();
     const [weatherData, setWeatherData] = useState({
         lastReload: '-',
+        lastDepth: '-',
         depth: '-',
         WS: '-',
         WA: '-',
@@ -160,6 +161,7 @@ const WeatcherData = ({state}) => {
                 await GetWeatcher(position.coords.latitude, position.coords.longitude).then(data => {
                     setWeatherData({
                         ...weatherData,
+                        lastDepth: new Date().getHours() + ":" + new Date().getMinutes(),
                         depth: depth,
                         lastReload: data.current.dt,
                         WS: Math.round(data.current.wind_speed * 1.94384449 * 10) / 10,
@@ -208,7 +210,42 @@ const WeatcherData = ({state}) => {
                 })
         }
     };
+    const NewDepthFunction = () => {
+        console.log("new Depth");
 
+        async function GetDepth(lat, lon) {
+            const API = `https://cors-anywhere.herokuapp.com/https://maps.googleapis.com/maps/api/elevation/json?locations=${lat},${lon}&key=${process.env.REACT_APP_GOOGLE_API_KEY}`;
+            const response = await fetch(API);
+            return response.json();
+        }
+
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(setGpsData, errorGPS, {
+                enableHighAccuracy: true,
+                timeout: 5 * 1000, // 5 seconds
+                maximumAge: 0
+            });
+        } else {
+            errorGPS();
+            console.log("Geolocation is not supported by this browser.");
+        }
+
+        function errorGPS() {
+            console.log("error gps position")
+        }
+        async function setGpsData(position) {
+            setPermision(true)
+            if (navigator.onLine) {
+                await GetDepth(position.coords.latitude, position.coords.longitude).then(data => {
+                    setWeatherData({
+                        ...weatherData,
+                        lastDepth: new Date().getHours() + ":" + new Date().getMinutes(),
+                        depth: data.results[0].elevation > 0 ? 0 : Math.abs(Math.floor(data.results[0].elevation))
+                    })
+                })
+            }
+        }
+    }
     return (
         <Container
             state={state}
@@ -273,7 +310,13 @@ const WeatcherData = ({state}) => {
                     state={state}
                 >
                     <Text state={state}>DEPTH</Text>
-                <ContentDepth state={state} data={weatherData}> {weatherData.depth}m</ContentDepth>
+                <ContentDepth state={state} data={weatherData}>
+                    {weatherData.depth}m
+                    {weatherData.lastDepth !== '-' && <LastReload>last reload at: {weatherData.lastDepth}</LastReload>}
+                    <IconButton aria-label="reload" className={classes.margin} onClick={NewDepthFunction}>
+                            <ReplayRoundedIcon className={classes.reloadIcon} />
+                    </IconButton>
+                </ContentDepth>
                 </Value>
             </DepthContainer>
 
