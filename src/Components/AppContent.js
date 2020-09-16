@@ -12,13 +12,13 @@ const Container = styled.div`
     max-height: calc(100vh - 40px);
 `;
 
-const AppContent = ({state}) => {
+const AppContent = ({state, setState}) => {
 
 
     const Routes = (
         <Switch>
             <Route path="/" exact> <GpsData state={state}/></Route>
-            <Route path="/wind-data" exact> <WeatcherData state={state}/></Route>
+            <Route path="/wind-data" exact> <WeatcherData state={state} setState={setState}/></Route>
             <Route path="/map" exact> <span>map</span></Route>
             <Route path="/my-trips" exact> <span>trips</span></Route>
             <Route> <span>No souch route</span></Route>

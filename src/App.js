@@ -18,13 +18,18 @@ function App() {
     isMenuOpened: false,
     isNightModeOn: false,
     isTripActive: false,
+    isWeatherDataWarning: true,
   });
 
   useEffect(() => {
-    async function ReadNightMode() {
-      if (await get('nightMode') === true) setState({ ...state, isNightModeOn: true })
+    async function ReadIndexDB() {
+      setState({
+        ...state,
+        isNightModeOn: await get('nightMode') === true ?  true : false,
+        isWeatherDataWarning: await  get('isWeatherDataWarning') === false ? false : true
+      })
     }
-    ReadNightMode();
+    ReadIndexDB();
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
