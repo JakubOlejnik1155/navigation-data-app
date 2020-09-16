@@ -116,7 +116,7 @@ const WeatcherData = ({state}) => {
     const classes = useStyles();
     const [weatherData, setWeatherData] = useState({
         lastReload: '-',
-        depth: 14.5,
+        depth: '-',
         WS: '-',
         WA: '-',
         TMP: '-'
@@ -126,6 +126,11 @@ const WeatcherData = ({state}) => {
     useEffect(()=>{
         async function GetWeatcher(lat, lon){
             const API = `https://api.openweathermap.org/data/2.5/onecall?lat=${lat}&lon=${lon}&units=metric&exclude=hourly,daily,minutely&appid=${process.env.REACT_APP_OPENWEATHER_API_KEY}`
+            const response = await fetch(API);
+            return response.json();
+        }
+        async function GetDepth(lat, lon){
+            const API = `https://cors-anywhere.herokuapp.com/https://maps.googleapis.com/maps/api/elevation/json?locations=${lat},${lon}&key=${process.env.REACT_APP_GOOGLE_API_KEY}`;
             const response = await fetch(API);
             return response.json();
         }
@@ -145,19 +150,24 @@ const WeatcherData = ({state}) => {
         function errorGPS() {
             setPermision(false)
         }
-        function setGpsData(position) {
+        async function setGpsData(position) {
             setPermision(true)
-            if(navigator.onLine)
-                GetWeatcher(position.coords.latitude, position.coords.longitude).then(data => {
-                    console.log(data);
+            if(navigator.onLine){
+                let depth = null;
+                await GetDepth(position.coords.latitude, position.coords.longitude).then(data => {
+                    depth = data.results[0].elevation > 0 ? 0 : Math.abs(Math.floor(data.results[0].elevation))
+                })
+                await GetWeatcher(position.coords.latitude, position.coords.longitude).then(data => {
                     setWeatherData({
                         ...weatherData,
+                        depth: depth,
                         lastReload: data.current.dt,
                         WS: Math.round(data.current.wind_speed * 1.94384449 * 10) / 10,
-                        WA:  data.current.wind_deg,
+                        WA: data.current.wind_deg,
                         TMP: Math.round(data.current.temp)
                     })
                 })
+            }
         }
     // eslint-disable-next-line react-hooks/exhaustive-deps
     },[])
@@ -188,7 +198,6 @@ const WeatcherData = ({state}) => {
             setPermision(true)
             if (navigator.onLine)
                 GetWeatcher(position.coords.latitude, position.coords.longitude).then(data => {
-                    console.log(data);
                     setWeatherData({
                         ...weatherData,
                         lastReload: data.current.dt,
