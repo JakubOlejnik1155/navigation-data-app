@@ -2,9 +2,19 @@ import React from 'react';
 import { GoogleMap, useLoadScript, Marker, InfoWindow} from '@react-google-maps/api'
 import MapStyles from './mapStyles/MapStyles';
 import DarkMapStyles from './mapStyles/DarkMapStyles';
+import Backdrop from '@material-ui/core/Backdrop';
+import CircularProgress from '@material-ui/core/CircularProgress';
+import { makeStyles } from '@material-ui/core';
+import { theme } from '../../data/styleThemes';
 
-
-
+const useStyles = makeStyles(() => ({
+    backdrop: {
+        zIndex: 999,
+        color: theme.light,
+        display: 'flex',
+        flexDirection: 'column'
+    }
+}));
 
 const mapContainerStyle = {
     width: '100%',
@@ -29,12 +39,18 @@ const darkOptions = {
 
 const Map = ({state}) => {
 
+    const classes = useStyles();
     const {isLoaded, loadError} = useLoadScript({
         googleMapsApiKey: process.env.REACT_APP_GOOGLE_API_KEY,
     })
 
     if (loadError) return 'Error Loading map'
-    if (!isLoaded) return 'Map still Loading'
+    if (!isLoaded) return (
+        <Backdrop className={classes.backdrop} open={true}>
+            <span style={{ fontFamily: 'Poppins, sans-serif', fontSize: '18px' }}>Loading Map...</span>
+            <CircularProgress color="inherit" />
+        </Backdrop>
+        )
 
     return (
         <GoogleMap
