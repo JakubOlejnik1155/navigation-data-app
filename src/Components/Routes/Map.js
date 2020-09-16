@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import { GoogleMap, useLoadScript, Marker, InfoWindow} from '@react-google-maps/api'
 import MapStyles from './mapStyles/MapStyles';
 import DarkMapStyles from './mapStyles/DarkMapStyles';
@@ -6,6 +6,8 @@ import Backdrop from '@material-ui/core/Backdrop';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import { makeStyles } from '@material-ui/core';
 import { theme } from '../../data/styleThemes';
+import SailboatIcon from '../../images/sailboat.svg';
+import DarkSailboatIcon from '../../images/darkmode-sailboat.svg';
 
 const useStyles = makeStyles(() => ({
     backdrop: {
@@ -40,9 +42,29 @@ const darkOptions = {
 const Map = ({state}) => {
 
     const classes = useStyles();
+    const [position, setPosition] = useState(null);
     const {isLoaded, loadError} = useLoadScript({
         googleMapsApiKey: process.env.REACT_APP_GOOGLE_API_KEY,
     })
+
+    useEffect(()=>{
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(showPosition, ()=>{
+                console.error("error with GPS geolocation API")
+            }, {
+                enableHighAccuracy: true,
+                timeout: 5 * 1000, // 5 seconds
+                maximumAge: 0
+            });
+        } else {
+            console.info("Geolocation is not supported by this browser.");
+        }
+
+        function showPosition(position) {
+            console.log(position)
+            setPosition(position)
+        }
+    },[])
 
     if (loadError) return 'Error Loading map'
     if (!isLoaded) return (
@@ -56,10 +78,23 @@ const Map = ({state}) => {
         <GoogleMap
             mapContainerStyle={mapContainerStyle}
             zoom={8}
-            center={center}
+            center={position ? {
+                lat: position.coords.latitude,
+                lng: position.coords.longitude
+            } : center}
             options={state.isNightModeOn ? darkOptions : options}
         >
-            Map
+            {position &&
+                <Marker
+                    icon={{
+                        url: state.isNightModeOn ? DarkSailboatIcon : SailboatIcon,
+                        scaledSize: new window.google.maps.Size(30,30),
+                    }}
+                    position={{
+                        lat: position.coords.latitude,
+                        lng: position.coords.longitude
+                    }}/>
+            }
         </GoogleMap>
      );
 }
