@@ -306,18 +306,26 @@ const WeatcherData = ({state}) => {
             <DepthContainer
                 state={state}
             >
-                <Value
-                    state={state}
-                >
-                    <Text state={state}>DEPTH</Text>
-                <ContentDepth state={state} data={weatherData}>
-                    {weatherData.depth}m
+                {navigator.onLine ? (
+                    <Value
+                        state={state}
+                    >
+                        <Text state={state}>DEPTH</Text>
+                        <ContentDepth state={state} data={weatherData}>
+                            {weatherData.depth}m
                     {weatherData.lastDepth !== '-' && <LastReload>last reload at: {weatherData.lastDepth}</LastReload>}
-                    <IconButton aria-label="reload" className={classes.margin} onClick={NewDepthFunction}>
-                            <ReplayRoundedIcon className={classes.reloadIcon} />
-                    </IconButton>
-                </ContentDepth>
-                </Value>
+                            <IconButton aria-label="reload" className={classes.margin} onClick={NewDepthFunction}>
+                                <ReplayRoundedIcon className={classes.reloadIcon} />
+                            </IconButton>
+                        </ContentDepth>
+                    </Value>
+                ) : (
+                    <OfflineContainer state={state}>
+                        <img src={NoInternetConnectionIcon} alt="no-internet-connection" style={{ width: '90px', height: '90px', marginBottom: '15px' }} />
+                        <p style={{ fontFamily: 'Poppins, sans-serif', fontSize: '18px' }}>You need to go online</p>
+                    </OfflineContainer>
+                )}
+
             </DepthContainer>
 
         </Container>
