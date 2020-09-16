@@ -4,6 +4,7 @@ import { Switch, Route } from 'react-router';
 import { theme } from '../data/styleThemes';
 import GpsData from './Routes/GpsData';
 import WeatcherData from './Routes/WeatherData';
+import Map from './Routes/Map';
 
 const Container = styled.div`
     background-color: ${props => props.state.isNightModeOn ? theme.dark : theme.light};
@@ -19,7 +20,7 @@ const AppContent = ({state, setState}) => {
         <Switch>
             <Route path="/" exact> <GpsData state={state}/></Route>
             <Route path="/wind-data" exact> <WeatcherData state={state} setState={setState}/></Route>
-            <Route path="/map" exact> <span>map</span></Route>
+            <Route path="/map" exact> <Map state={state}/></Route>
             <Route path="/my-trips" exact> <span>trips</span></Route>
             <Route> <span>No souch route</span></Route>
         </Switch>
