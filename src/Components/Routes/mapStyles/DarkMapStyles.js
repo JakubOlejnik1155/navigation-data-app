@@ -40,6 +40,15 @@ export default [
     },
     {
         "featureType": "administrative",
+        "elementType": "all",
+        "stylers": [
+            {
+                "visibility": "on"
+            }
+        ]
+    },
+    {
+        "featureType": "administrative",
         "elementType": "geometry.fill",
         "stylers": [
             {
@@ -55,7 +64,7 @@ export default [
         "elementType": "geometry.stroke",
         "stylers": [
             {
-                "color": "#000000"
+                "color": "#522121"
             },
             {
                 "lightness": 17
@@ -70,7 +79,7 @@ export default [
         "elementType": "geometry",
         "stylers": [
             {
-                "visibility": "simplified"
+                "visibility": "on"
             }
         ]
     },
@@ -124,7 +133,7 @@ export default [
         "elementType": "labels",
         "stylers": [
             {
-                "visibility": "off"
+                "visibility": "on"
             }
         ]
     },

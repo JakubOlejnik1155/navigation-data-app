@@ -1,5 +1,26 @@
 export default [
     {
+        "featureType": "landscape",
+        "elementType": "geometry",
+        "stylers": [
+            {
+                "saturation": "4"
+            },
+            {
+                "lightness": "-18"
+            }
+        ]
+    },
+    {
+        "featureType": "landscape.natural.landcover",
+        "elementType": "geometry",
+        "stylers": [
+            {
+                "saturation": "22"
+            }
+        ]
+    },
+    {
         "featureType": "poi",
         "elementType": "all",
         "stylers": [
@@ -67,13 +88,16 @@ export default [
                 "weight": "0.01"
             },
             {
-                "gamma": "0.56"
+                "lightness": "-16"
             },
             {
-                "lightness": "-68"
+                "saturation": "31"
             },
             {
-                "saturation": "87"
+                "gamma": "1.07"
+            },
+            {
+                "color": "#2eaaef"
             }
         ]
     },
