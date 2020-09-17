@@ -9,6 +9,7 @@ import PauseRoundedIcon from '@material-ui/icons/PauseRounded';
 import StopRoundedIcon from '@material-ui/icons/StopRounded';
 import MuiAlert from '@material-ui/lab/Alert'
 import Snackbar from '@material-ui/core/Snackbar';
+import { set, get } from 'idb-keyval';
 
 const NavigationBar = styled.header`
   background-color: ${(props) => props.isNightModeOn === true ? theme.dark : theme.light};
@@ -33,15 +34,16 @@ const AppName = styled.span`
 function Alert(props) {
   return <MuiAlert elevation={6} variant="filled" {...props} />;
 }
-
+let watchPositionIdex = null;
+let tripObject = null;
 
 const Header = ({state, setState}) => {
 
-    const [isSnackbar, setIsSnackbar] = useState({
-      open: false,
-      text: '-',
-      severity: 'success',
-    });
+  const [isSnackbar, setIsSnackbar] = useState({
+    open: false,
+    text: '-',
+    severity: 'success',
+  });
 
   const handleClose = () => {
     setIsSnackbar({
@@ -56,6 +58,75 @@ const Header = ({state, setState}) => {
       severity
     })
   }
+  const handleStartTripButton = () => {
+    console.log('start gps tracking for TRIP');
+    if(tripObject === null){
+      tripObject = {
+        startTime: new Date().toJSON(),
+        endTime:  null,
+        isfinished: false,
+        coordsArray: [],
+        speedArray: []
+      }
+    }
+    if (navigator.geolocation) {
+      watchPositionIdex = navigator.geolocation.watchPosition(getPosition, errorGPS, {
+        enableHighAccuracy: true,
+        timeout: 5 * 1000, // 10 seconds
+        maximumAge: 0
+      });
+    } else {
+      errorGPS();
+    }
+
+    function errorGPS() {
+      console.error("error in GPS position watching")
+    }
+    async function getPosition(position) {
+      let flag = false;
+      await tripObject.coordsArray.forEach((element) => {
+        if(element[0] === position.coords.latitude && element[1] === position.coords.longitude) {
+          flag = true;
+          console.log("równe");
+        }
+      })
+      if(!flag){
+        tripObject = {
+          ...tripObject,
+          coordsArray: [
+            ...tripObject.coordsArray,
+            [position.coords.latitude, position.coords.longitude]
+          ],
+          speedArray: [
+            ...tripObject.speedArray,
+            position.coords.speed ? position.coords.speed : 0
+          ]
+        }
+        console.log(tripObject)
+      }
+    }
+  };
+  
+  const handleEndingTrip = async () => {
+    console.log('end gps tracking for TRIP');
+    tripObject = {
+      ...tripObject,
+      isfinished: true,
+      endTime: new Date().toJSON()
+    }
+    await get("tripsArray").then((val)=>{
+      set("tripsArray", [...val, tripObject]);
+    }).catch(()=>{
+      set("tripsArray", [tripObject]);
+    })
+    navigator.geolocation.clearWatch(watchPositionIdex);
+    tripObject = null;
+
+  };
+  const handlePausingTrip = () => {
+    console.log('pause gps tracking for TRIP');
+    navigator.geolocation.clearWatch(watchPositionIdex);
+  };
 
 
 
@@ -88,6 +159,7 @@ const Header = ({state, setState}) => {
                   onClick={() => {
                     setState({ ...state, isTripActive: 'paused' })
                     handleShowSnackbar("trip has been paused","info")
+                    handlePausingTrip();
                   }}
                 >
                   <PauseRoundedIcon
@@ -100,8 +172,9 @@ const Header = ({state, setState}) => {
                   size="medium"
                   style={{ width: "30px", height: '30px', marginRight: '10px', backgroundColor: `${theme.red}` }}
                   onClick={() => {
-                    setState({ ...state, isTripActive: false })
-                    handleShowSnackbar("trip has been ended","warning")
+                    setState({ ...state, isTripActive: false });
+                    handleShowSnackbar("trip has been ended","warning");
+                    handleEndingTrip();
                   }}
                 >
                   <StopRoundedIcon
@@ -119,6 +192,7 @@ const Header = ({state, setState}) => {
             onClick={()=> {
               setState({...state, isTripActive: true})
               handleShowSnackbar("trip has been started", "success")
+              handleStartTripButton();
             }}
           >
             <PlayArrowRoundedIcon
@@ -136,6 +210,7 @@ const Header = ({state, setState}) => {
               onClick={() => {
                 setState({ ...state, isTripActive: true })
                 handleShowSnackbar("trip has been resumed", "success")
+                handleStartTripButton();
               }}
             >
               <PlayArrowRoundedIcon
@@ -150,6 +225,7 @@ const Header = ({state, setState}) => {
               onClick={() => {
                 setState({ ...state, isTripActive: false })
                 handleShowSnackbar("trip has been ended", "warning")
+                handleEndingTrip()
               }}
             >
               <StopRoundedIcon
@@ -159,10 +235,10 @@ const Header = ({state, setState}) => {
             </IconButton>
           </>
         )}
-        <Snackbar 
-          open={isSnackbar.open} 
-          autoHideDuration={3000} 
-          onClose={handleClose} 
+        <Snackbar
+          open={isSnackbar.open}
+          autoHideDuration={3000}
+          onClose={handleClose}
           anchorOrigin={{ vertical: "bottom", horizontal:"right" }}
         >
           <Alert  severity={isSnackbar.severity} >

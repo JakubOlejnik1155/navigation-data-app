@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import { GoogleMap, useLoadScript, Marker, InfoWindow} from '@react-google-maps/api'
+import { GoogleMap, useLoadScript, Marker} from '@react-google-maps/api'
 import MapStyles from './mapStyles/MapStyles';
 import DarkMapStyles from './mapStyles/DarkMapStyles';
 import Backdrop from '@material-ui/core/Backdrop';
