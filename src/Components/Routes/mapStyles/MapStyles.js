@@ -61,7 +61,7 @@ export default [
         "elementType": "geometry",
         "stylers": [
             {
-                "color": "#9e9e9e"
+                "color": "#747474"
             },
             {
                 "visibility": "on"
