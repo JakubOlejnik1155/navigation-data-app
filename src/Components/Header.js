@@ -37,7 +37,7 @@ function Alert(props) {
 let watchPositionIdex = null;
 let tripObject = null;
 
-const Header = ({state, setState}) => {
+const Header = ({state, setState, setTrip, trip}) => {
 
   const [isSnackbar, setIsSnackbar] = useState({
     open: false,
@@ -102,6 +102,7 @@ const Header = ({state, setState}) => {
             position.coords.speed ? position.coords.speed : 0
           ]
         }
+        setTrip(tripObject.speedArray)
         console.log(tripObject)
       }
     }
@@ -119,6 +120,7 @@ const Header = ({state, setState}) => {
     }).catch(()=>{
       set("tripsArray", [tripObject]);
     })
+    setTrip([]);
     navigator.geolocation.clearWatch(watchPositionIdex);
     tripObject = null;
 

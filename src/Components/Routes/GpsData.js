@@ -140,9 +140,22 @@ const LogPlusTrip = styled.div`
     flex-grow: 2;
     display: flex;
 `;
+const findAvg = array => {
+    let sum = 0;
+    array.forEach(element => {
+        sum = sum +element;
+    });
+    return sum/array.length;
+}
+const findMax = array => {
+    let max = 0;
+    array.forEach(element => {
+        if(element > max) max = element
+    });
+    return max;
+}
 
-
-const GpsData = ({state}) => {
+const GpsData = ({state, trip}) => {
 
     const classes = useStyles();
     const [gpsData, setGpsData] = useState(null);
@@ -200,12 +213,12 @@ const GpsData = ({state}) => {
                             <MaxAvg state={state}>
                                 <MAContainer>
                                     <SogText state={state}>max</SogText>
-                                    <MAContent state={state}> _._ <span style={{ fontSize: '30px' }}>knt</span></MAContent>
+                                    <MAContent state={state}> {trip.length > 0 ? Math.round(findMax(trip)*10)/10 : '_._'} <span style={{ fontSize: '30px' }}>knt</span></MAContent>
 
                                 </MAContainer>
                                 <MAContainer>
                                     <SogText state={state}>avg</SogText>
-                                    <MAContent state={state}> _._ <span style={{ fontSize: '30px' }}>knt</span></MAContent>
+                                    <MAContent state={state}> {trip.length > 0 ? Math.round(findAvg(trip)*10)/10 : '_._'} <span style={{ fontSize: '30px' }}>knt</span></MAContent>
 
                                 </MAContainer>
                             </MaxAvg>

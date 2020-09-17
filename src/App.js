@@ -21,6 +21,8 @@ function App() {
     isWeatherDataWarning: true,
   });
 
+  const [trip, setTrip] = React.useState([]);
+
   useEffect(() => {
     async function ReadIndexDB() {
       setState({
@@ -40,11 +42,14 @@ function App() {
       setState={setState}
     >
       <NavBar
+      setTrip={setTrip}
+      trip={trip}
         state={state}
         setState={setState}
       />
       <AppContent
         state={state}
+        trip={trip}
         setState={setState}
       />
     </AppContainer>
