@@ -61,7 +61,6 @@ const Map = ({state}) => {
         }
 
         function showPosition(position) {
-            console.log(position)
             setPosition(position)
         }
     },[])
@@ -88,7 +87,7 @@ const Map = ({state}) => {
                 <Marker
                     icon={{
                         url: state.isNightModeOn ? DarkSailboatIcon : SailboatIcon,
-                        scaledSize: new window.google.maps.Size(30,30),
+                        scaledSize: new window.google.maps.Size(20,20),
                     }}
                     position={{
                         lat: position.coords.latitude,
