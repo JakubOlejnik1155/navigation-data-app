@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
 import {theme} from '../data/styleThemes';
 import AnchorImage from '../images/anchor.svg';
@@ -7,6 +7,8 @@ import MenuRoundedIcon from '@material-ui/icons/MenuRounded';
 import PlayArrowRoundedIcon from '@material-ui/icons/PlayArrowRounded';
 import PauseRoundedIcon from '@material-ui/icons/PauseRounded';
 import StopRoundedIcon from '@material-ui/icons/StopRounded';
+import MuiAlert from '@material-ui/lab/Alert'
+import Snackbar from '@material-ui/core/Snackbar';
 
 const NavigationBar = styled.header`
   background-color: ${(props) => props.isNightModeOn === true ? theme.dark : theme.light};
@@ -28,10 +30,34 @@ const AppName = styled.span`
   color: ${props => props.isNightModeOn === true ? theme.red : theme.dark}};
 `;
 
-
+function Alert(props) {
+  return <MuiAlert elevation={6} variant="filled" {...props} />;
+}
 
 
 const Header = ({state, setState}) => {
+
+    const [isSnackbar, setIsSnackbar] = useState({
+      open: false,
+      text: '-',
+      severity: 'success',
+    });
+
+  const handleClose = () => {
+    setIsSnackbar({
+      open: false,
+      text: '-',
+    });
+  };
+  const handleShowSnackbar = (text, severity) => {
+    setIsSnackbar({
+      open: true,
+      text,
+      severity
+    })
+  }
+
+
 
     return (
       <NavigationBar
@@ -56,10 +82,13 @@ const Header = ({state, setState}) => {
         {state.isTripActive === true && (
               <>
                 <IconButton
-                  aria-label="start Trip"
+                  aria-label="pause Trip"
                   size="medium"
                   style={{ width: "30px", height: '30px', marginRight: '10px', backgroundColor: `${theme.blue}` }}
-                  onClick={() => setState({ ...state, isTripActive: 'paused' })}
+                  onClick={() => {
+                    setState({ ...state, isTripActive: 'paused' })
+                    handleShowSnackbar("trip has been paused","info")
+                  }}
                 >
                   <PauseRoundedIcon
                     fontSize="inherit"
@@ -67,10 +96,13 @@ const Header = ({state, setState}) => {
                   />
                 </IconButton>
                 <IconButton
-                  aria-label="start Trip"
+                  aria-label="end Trip"
                   size="medium"
                   style={{ width: "30px", height: '30px', marginRight: '10px', backgroundColor: `${theme.red}` }}
-                  onClick={() => setState({ ...state, isTripActive: false })}
+                  onClick={() => {
+                    setState({ ...state, isTripActive: false })
+                    handleShowSnackbar("trip has been ended","warning")
+                  }}
                 >
                   <StopRoundedIcon
                     fontSize="inherit"
@@ -84,7 +116,10 @@ const Header = ({state, setState}) => {
             aria-label="start Trip"
             size="medium"
             style={{ width: "30px", height: '30px', marginRight: '10px', backgroundColor: `${theme.green}` }}
-            onClick={()=> setState({...state, isTripActive: true})}
+            onClick={()=> {
+              setState({...state, isTripActive: true})
+              handleShowSnackbar("trip has been started", "success")
+            }}
           >
             <PlayArrowRoundedIcon
               fontSize="inherit"
@@ -98,7 +133,10 @@ const Header = ({state, setState}) => {
               aria-label="start Trip"
               size="medium"
               style={{ width: "30px", height: '30px', marginRight: '10px', backgroundColor: `${theme.green}` }}
-              onClick={() => setState({ ...state, isTripActive: true })}
+              onClick={() => {
+                setState({ ...state, isTripActive: true })
+                handleShowSnackbar("trip has been resumed", "success")
+              }}
             >
               <PlayArrowRoundedIcon
                 fontSize="inherit"
@@ -106,10 +144,13 @@ const Header = ({state, setState}) => {
               />
             </IconButton>
             <IconButton
-              aria-label="start Trip"
+              aria-label="stop Trip"
               size="medium"
               style={{ width: "30px", height: '30px', marginRight: '10px', backgroundColor: `${theme.red}` }}
-              onClick={() => setState({ ...state, isTripActive: false })}
+              onClick={() => {
+                setState({ ...state, isTripActive: false })
+                handleShowSnackbar("trip has been ended", "warning")
+              }}
             >
               <StopRoundedIcon
                 fontSize="inherit"
@@ -118,6 +159,16 @@ const Header = ({state, setState}) => {
             </IconButton>
           </>
         )}
+        <Snackbar 
+          open={isSnackbar.open} 
+          autoHideDuration={3000} 
+          onClose={handleClose} 
+          anchorOrigin={{ vertical: "bottom", horizontal:"right" }}
+        >
+          <Alert  severity={isSnackbar.severity} >
+            {isSnackbar.text}
+        </Alert>
+        </Snackbar>
       </NavigationBar>
      );
 }
