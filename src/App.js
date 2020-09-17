@@ -43,11 +43,11 @@ function App() {
     >
       <NavBar
       setTrip={setTrip}
-      trip={trip}
         state={state}
         setState={setState}
       />
       <AppContent
+      setTrip={setTrip}
         state={state}
         trip={trip}
         setState={setState}

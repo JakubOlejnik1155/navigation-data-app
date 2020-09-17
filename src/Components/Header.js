@@ -37,7 +37,7 @@ function Alert(props) {
 let watchPositionIdex = null;
 let tripObject = null;
 
-const Header = ({state, setState, setTrip, trip}) => {
+const Header = ({state, setState, setTrip}) => {
 
   const [isSnackbar, setIsSnackbar] = useState({
     open: false,

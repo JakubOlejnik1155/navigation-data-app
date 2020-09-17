@@ -3,14 +3,13 @@ import Header from './Header';
 import Menu from './Menu';
 
 
-const Navbar = ({state, setState, setTrip, trip}) => {
+const Navbar = ({state, setState, setTrip}) => {
     return (
       <>
         <Header
           state={state}
           setState={setState}
           setTrip={setTrip}
-          trip={trip}
         />
         <Menu
           state={state}

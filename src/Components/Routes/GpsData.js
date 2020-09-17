@@ -208,17 +208,16 @@ const GpsData = ({state, trip}) => {
                         <SogPlusmax>
                             <Sog>
                                 <SogText state={state}>Sog</SogText>
-                                <SogContent state={state}>{Math.round(gpsData.speed * 1.94384449 * 10)/10} <span style={{ fontSize: '30px' }}>knt</span></SogContent>
-                            </Sog>
+                                <SogContent state={state}>{Math.round(gpsData.speed * 1.94384449 * 10)/10} <span style={{ fontSize: '30px' }}>knt</span></SogContent>                            </Sog>
                             <MaxAvg state={state}>
                                 <MAContainer>
                                     <SogText state={state}>max</SogText>
-                                    <MAContent state={state}> {trip.length > 0 ? Math.round(findMax(trip)*10)/10 : '_._'} <span style={{ fontSize: '30px' }}>knt</span></MAContent>
+                                    <MAContent state={state}> {trip.length > 0 ? Math.round(findMax(trip) * 1.94384449 *10)/10 : '_._'} <span style={{ fontSize: '30px' }}>knt</span></MAContent>
 
                                 </MAContainer>
                                 <MAContainer>
                                     <SogText state={state}>avg</SogText>
-                                    <MAContent state={state}> {trip.length > 0 ? Math.round(findAvg(trip)*10)/10 : '_._'} <span style={{ fontSize: '30px' }}>knt</span></MAContent>
+                                    <MAContent state={state}> {trip.length > 0 ? Math.round(findAvg(trip) * 1.94384449 *10)/10 : '_._'} <span style={{ fontSize: '30px' }}>knt</span></MAContent>
 
                                 </MAContainer>
                             </MaxAvg>
