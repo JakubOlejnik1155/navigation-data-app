@@ -18,7 +18,7 @@ const AppContent = ({state, setState, trip, setTrip}) => {
     const GoogleMap = React.useMemo( ()=> {
         return <Map state={state} />
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    },[])
+    },[state.isNightModeOn])
 
     const Routes = (
         <Switch>
