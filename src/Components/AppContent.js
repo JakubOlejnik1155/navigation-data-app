@@ -15,12 +15,16 @@ const Container = styled.div`
 
 const AppContent = ({state, setState, trip, setTrip}) => {
 
+    const GoogleMap = React.useMemo( ()=> {
+        return <Map state={state} />
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    },[])
 
     const Routes = (
         <Switch>
             <Route path="/" exact> <GpsData state={state} trip={trip} setTrip={setTrip}/></Route>
             <Route path="/wind-data" exact> <WeatcherData state={state} setState={setState}/></Route>
-            <Route path="/map" exact> <Map state={state}/></Route>
+            <Route path="/map" exact>  {GoogleMap}</Route>
             <Route path="/my-trips" exact> <span>trips</span></Route>
             <Route> <span>No souch route</span></Route>
         </Switch>
