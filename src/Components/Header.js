@@ -10,6 +10,8 @@ import StopRoundedIcon from '@material-ui/icons/StopRounded';
 import MuiAlert from '@material-ui/lab/Alert'
 import Snackbar from '@material-ui/core/Snackbar';
 import { set, get } from 'idb-keyval';
+import { getDistance } from 'geolib';
+
 
 const NavigationBar = styled.header`
   background-color: ${(props) => props.isNightModeOn === true ? theme.dark : theme.light};
@@ -37,7 +39,7 @@ function Alert(props) {
 let watchPositionIdex = null;
 let tripObject = null;
 
-const Header = ({state, setState, setTrip}) => {
+const Header = ({state, setState, setTrip, setDistance}) => {
 
   const [isSnackbar, setIsSnackbar] = useState({
     open: false,
@@ -66,7 +68,8 @@ const Header = ({state, setState, setTrip}) => {
         endTime:  null,
         isfinished: false,
         coordsArray: [],
-        speedArray: []
+        speedArray: [],
+        tripDistance: 0,
       }
     }
     if (navigator.geolocation) {
@@ -102,18 +105,34 @@ const Header = ({state, setState, setTrip}) => {
             position.coords.speed ? position.coords.speed : 0
           ]
         }
-        setTrip(tripObject.speedArray)
-        console.log(tripObject)
+        setTrip(tripObject.speedArray);
+        setDistance(GetDistanceFromArray(tripObject.coordsArray));
       }
     }
   };
+
+  const GetDistanceFromArray =  (array) =>{
+    let distance = 0;
+    for( let i = 0 ; i < array.length - 1 ; i++){
+      distance += getDistance({
+        latitude: array[i][0],
+        longitude: array[i][1]
+      }, {
+        latitude: array[i + 1][0],
+        longitude: array[i + 1][1]
+      })
+    }
+    console.log(distance)
+    return distance;
+  }
   
   const handleEndingTrip = async () => {
     console.log('end gps tracking for TRIP');
     tripObject = {
       ...tripObject,
       isfinished: true,
-      endTime: new Date().toJSON()
+      endTime: new Date().toJSON(),
+      tripDistance: GetDistanceFromArray(tripObject.coordsArray)
     }
     await get("tripsArray").then((val)=>{
       set("tripsArray", [...val, tripObject]);
@@ -121,6 +140,7 @@ const Header = ({state, setState, setTrip}) => {
       set("tripsArray", [tripObject]);
     })
     setTrip([]);
+    setDistance(0);
     navigator.geolocation.clearWatch(watchPositionIdex);
     tripObject = null;
 

@@ -13,7 +13,7 @@ const Container = styled.div`
     max-height: calc(100vh - 40px);
 `;
 
-const AppContent = ({state, setState, trip, setTrip}) => {
+const AppContent = ({state, setState, trip, setTrip, distance}) => {
 
     const GoogleMap = React.useMemo( ()=> {
         return <Map state={state} />
@@ -22,7 +22,7 @@ const AppContent = ({state, setState, trip, setTrip}) => {
 
     const Routes = (
         <Switch>
-            <Route path="/" exact> <GpsData state={state} trip={trip} setTrip={setTrip}/></Route>
+            <Route path="/" exact> <GpsData state={state} trip={trip} setTrip={setTrip} distance={distance}/></Route>
             <Route path="/wind-data" exact> <WeatcherData state={state} setState={setState}/></Route>
             <Route path="/map" exact>  {GoogleMap}</Route>
             <Route path="/my-trips" exact> <span>trips</span></Route>

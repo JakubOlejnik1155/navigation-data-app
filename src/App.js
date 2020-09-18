@@ -22,7 +22,7 @@ function App() {
   });
 
   const [trip, setTrip] = React.useState([]);
-
+  const [distance, setDistance] =React.useState(0);
   useEffect(() => {
     async function ReadIndexDB() {
       setState({
@@ -42,7 +42,8 @@ function App() {
       setState={setState}
     >
       <NavBar
-      setTrip={setTrip}
+        setTrip={setTrip}
+        setDistance={setDistance}
         state={state}
         setState={setState}
       />
@@ -50,6 +51,7 @@ function App() {
       setTrip={setTrip}
         state={state}
         trip={trip}
+        distance={distance}
         setState={setState}
       />
     </AppContainer>
