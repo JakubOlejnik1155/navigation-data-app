@@ -247,7 +247,7 @@ const GpsData = ({state, trip, distance}) => {
 
                             <MAContainer>
                                 <SogText state={state}>trip</SogText>
-                                <MAContent state={state}> {Math.round(distance / 1852 * 10)/10} <span style={{ fontSize: '30px' }}>nm</span></MAContent>
+                                <MAContent state={state}> {state.isTripActive === false ?  "_._" : Math.round(distance / 1852 * 10)/10} <span style={{ fontSize: '30px' }}>nm</span></MAContent>
                             </MAContainer>
                         </LogPlusTrip>
                     </HeadingContainer>
