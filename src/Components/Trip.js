@@ -6,6 +6,7 @@ import Button from '@material-ui/core/Button'
 import IconButton from '@material-ui/core/IconButton';
 import { makeStyles } from '@material-ui/core/styles';
 import { get, set } from 'idb-keyval';
+import {Link} from 'react-router-dom'
 
 const useStyles = makeStyles(() => ({
     deleteBtn: {
@@ -95,9 +96,11 @@ const Trip = ({ trip, state }) => {
                     msToTime(new Date(trip.endTime).getTime() - new Date(trip.startTime).getTime()).seconds + "s "
                 }</span>
             <Distance>{Math.round(trip.tripDistance / 1852 * 10) / 10} nm</Distance>
-            <Button variant="outlined" size="small" color="primary" className={classes.showBtn}>
-                show more
-            </Button>
+            <Link to={`/my-trips/${trip.startTime}`} >
+                <Button variant="outlined" size="small" color="primary" className={classes.showBtn}>
+                    show more
+                </Button>
+            </Link>
             <IconButton aria-label="delete" size="small"className={classes.deleteBtn} onClick={()=>{deleteTrip(trip)}}>
                 <DeleteIcon fontSize="small" className={classes.deleteIcon}/>
             </IconButton>

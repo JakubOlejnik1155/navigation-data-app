@@ -44,8 +44,12 @@ const Trips = ({state}) => {
                 setTripsArray(val);
             })
         }
-        getTripsArray();
-    })
+        // eslint-disable-next-line no-unused-vars
+        let a = getTripsArray();
+        return ()=>{
+            a = false;
+        }
+    },[])
     return (
         <TripsContainer state={state}>
             {tripsArray && tripsArray.length >0  ? tripsArray.map(trip => <Trip key={trip.startTime} trip={trip} state={state}/>):(
