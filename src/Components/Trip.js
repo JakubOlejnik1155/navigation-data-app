@@ -23,8 +23,8 @@ const useStyles = makeStyles(() => ({
         margin: '2px',
         padding: '2px',
         fontSize: '12px',
-        color: theme.blue,
-        borderColor: theme.blue,
+        color: 'rgb(60,140,250)',
+        borderColor: 'rgb(60, 140, 250)',
         textTransform: 'lowercase'
     }
 }));
