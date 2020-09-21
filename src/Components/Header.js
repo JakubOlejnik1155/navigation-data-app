@@ -39,7 +39,7 @@ function Alert(props) {
 let watchPositionIdex = null;
 let tripObject = null;
 
-const Header = ({state, setState, setTrip, setDistance}) => {
+const Header = ({ state, setState, setTrip, setDistance, setLog, log}) => {
 
   const [isSnackbar, setIsSnackbar] = useState({
     open: false,
@@ -107,6 +107,8 @@ const Header = ({state, setState, setTrip, setDistance}) => {
         }
         setTrip(tripObject.speedArray);
         setDistance(GetDistanceFromArray(tripObject.coordsArray));
+        await set('log', log + GetDistanceFromArray(tripObject.coordsArray))
+        setLog(log + GetDistanceFromArray(tripObject.coordsArray))
       }
     }
   };
@@ -125,7 +127,7 @@ const Header = ({state, setState, setTrip, setDistance}) => {
     console.log(distance)
     return distance;
   }
-  
+
   const handleEndingTrip = async () => {
     console.log('end gps tracking for TRIP');
     tripObject = {

@@ -23,13 +23,16 @@ function App() {
 
   const [trip, setTrip] = React.useState([]);
   const [distance, setDistance] =React.useState(0);
+  const [log, setLog] = React.useState(0)
+
   useEffect(() => {
     async function ReadIndexDB() {
       setState({
         ...state,
         isNightModeOn: await get('nightMode') === true ?  true : false,
-        isWeatherDataWarning: await  get('isWeatherDataWarning') === false ? false : true
-      })
+        isWeatherDataWarning: await  get('isWeatherDataWarning') === false ? false : true,
+      });
+      setLog(await get('log') ? await get('log') : 0);
     }
     ReadIndexDB();
   // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -42,15 +45,18 @@ function App() {
       setState={setState}
     >
       <NavBar
+        log={log}
+        setLog={setLog}
         setTrip={setTrip}
         setDistance={setDistance}
         state={state}
         setState={setState}
       />
       <AppContent
-      setTrip={setTrip}
+        setTrip={setTrip}
         state={state}
         trip={trip}
+        log={log}
         distance={distance}
         setState={setState}
       />

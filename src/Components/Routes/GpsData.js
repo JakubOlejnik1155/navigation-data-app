@@ -155,7 +155,7 @@ const findMax = array => {
     return max;
 }
 
-const GpsData = ({state, trip, distance}) => {
+const GpsData = ({state, trip, distance, log}) => {
 
     const classes = useStyles();
     const [gpsData, setGpsData] = useState(null);
@@ -242,7 +242,7 @@ const GpsData = ({state, trip, distance}) => {
 
                             <MAContainer>
                                 <SogText state={state}>log</SogText>
-                                <MAContent state={state}> _._ <span style={{ fontSize: '30px' }}>nm</span></MAContent>
+                                <MAContent state={state}> {Math.round(log / 1852 * 10) / 10} <span style={{ fontSize: '30px' }}>nm</span></MAContent>
                             </MAContainer>
 
                             <MAContainer>
