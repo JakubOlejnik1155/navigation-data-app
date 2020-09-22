@@ -52,7 +52,7 @@ const Trips = ({state}) => {
     },[])
     return (
         <TripsContainer state={state}>
-            {tripsArray && tripsArray.length >0  ? tripsArray.map(trip => <Trip key={trip.startTime} trip={trip} state={state}/>):(
+            {tripsArray && tripsArray.length > 0 ? tripsArray.map(trip => <Trip key={trip.startTime} trip={trip} state={state} setTripsArray={setTripsArray}/>):(
                 <NoRoutes state={state}>
                     <img src={SailingSVG} alt="boat" width="200" height="200"/>
                     <NoRoutesInfo>You don't have any travels yet</NoRoutesInfo>

@@ -6,7 +6,12 @@ import Button from '@material-ui/core/Button'
 import IconButton from '@material-ui/core/IconButton';
 import { makeStyles } from '@material-ui/core/styles';
 import { get, set } from 'idb-keyval';
-import {Link} from 'react-router-dom'
+import {Link} from 'react-router-dom';
+import Dialog from '@material-ui/core/Dialog';
+import DialogActions from '@material-ui/core/DialogActions';
+import DialogContent from '@material-ui/core/DialogContent';
+import DialogContentText from '@material-ui/core/DialogContentText';
+import DialogTitle from '@material-ui/core/DialogTitle';
 
 const useStyles = makeStyles(() => ({
     deleteBtn: {
@@ -71,40 +76,67 @@ function msToTime(milliseconds) {
 
 
 
-const Trip = ({ trip, state }) => {
+const Trip = ({ trip, state, setTripsArray }) => {
     const classes = useStyles();
+    const [isDialogOpen, setIsDialogOpen] = React.useState(false)
 
     const deleteTrip = async trip => {
         await get("tripsArray").then(async array => {
-            console.log(array);
             let newArray = [];
             for (let i = 0; i < array.length; i++) {
                 const element = array[i];
                 if(element.startTime !== trip.startTime) newArray.push(element)
             }
             await set("tripsArray", newArray);
+            setTripsArray(newArray);
         })
     }
 
 
     return (
-        <TripContainer state={state}>
-            <span style={{fontWeight: 'light', fontStyle: 'italic'}}>{new Date(trip.startTime).toLocaleDateString()}</span>
-            <span style={{position: 'absolute', bottom: '2px', right: '2px'}}>{
-                    msToTime(new Date(trip.endTime).getTime() - new Date(trip.startTime).getTime()).hour + "h " +
-                    msToTime(new Date(trip.endTime).getTime() - new Date(trip.startTime).getTime()).minute + "m "+
-                    msToTime(new Date(trip.endTime).getTime() - new Date(trip.startTime).getTime()).seconds + "s "
-                }</span>
-            <Distance>{Math.round(trip.tripDistance / 1852 * 10) / 10} nm</Distance>
-            <Link to={`/my-trips/${trip.startTime}`} >
-                <Button variant="outlined" size="small" color="primary" className={classes.showBtn}>
-                    show more
-                </Button>
-            </Link>
-            <IconButton aria-label="delete" size="small"className={classes.deleteBtn} onClick={()=>{deleteTrip(trip)}}>
-                <DeleteIcon fontSize="small" className={classes.deleteIcon}/>
-            </IconButton>
-        </TripContainer>
+        <>
+            <TripContainer state={state}>
+                <span style={{fontWeight: 'light', fontStyle: 'italic'}}>{new Date(trip.startTime).toLocaleDateString()}</span>
+                <span style={{position: 'absolute', bottom: '2px', right: '2px'}}>{
+                        msToTime(new Date(trip.endTime).getTime() - new Date(trip.startTime).getTime()).hour + "h " +
+                        msToTime(new Date(trip.endTime).getTime() - new Date(trip.startTime).getTime()).minute + "m "+
+                        msToTime(new Date(trip.endTime).getTime() - new Date(trip.startTime).getTime()).seconds + "s "
+                    }</span>
+                <Distance>{Math.round(trip.tripDistance / 1852 * 10) / 10} nm</Distance>
+                <Link to={`/my-trips/${trip.startTime}`} >
+                    <Button variant="outlined" size="small" color="primary" className={classes.showBtn}>
+                        show more
+                    </Button>
+                </Link>
+                <IconButton aria-label="delete" size="small"className={classes.deleteBtn} onClick={()=>{setIsDialogOpen(true)}}>
+                    <DeleteIcon fontSize="small" className={classes.deleteIcon}/>
+                </IconButton>
+            </TripContainer>
+
+            <Dialog
+                open={isDialogOpen}
+                onClose={()=>setIsDialogOpen(false)}
+                aria-labelledby="alert-dialog-title"
+                aria-describedby="alert-dialog-description"
+            >
+                <DialogTitle id="alert-dialog-title">
+                    Warning!
+                </DialogTitle>
+                <DialogContent>
+                    <DialogContentText id="alert-dialog-description">
+                        Are you sure you want to remove this journey from your history? This operation is irreversible.
+                    </DialogContentText>
+                </DialogContent>
+                <DialogActions>
+                    <Button onClick={() => setIsDialogOpen(false)} color="secondary">
+                        Disagree
+                    </Button>
+                    <Button onClick={()=> deleteTrip(trip)} color="secondary" autoFocus>
+                        Agree
+                    </Button>
+                </DialogActions>
+            </Dialog>
+        </>
      );
 }
 
