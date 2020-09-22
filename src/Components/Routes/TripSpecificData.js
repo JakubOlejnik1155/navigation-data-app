@@ -81,7 +81,7 @@ const TripSpecificdata = ({state}) => {
     const GoogleMap = React.useMemo(() => {
         return trip ? <SpecificRouteMap state={state} trip={trip}/> : "Loading Map"
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [state.isNightModeOn])
+    }, [state.isNightModeOn, trip])
     React.useEffect(()=> {
         async function getTrip(tripTime){
             await get("tripsArray").then(array => {

@@ -135,11 +135,13 @@ const Header = ({ state, setState, setTrip, setDistance, setLog, log}) => {
       endTime: new Date().toJSON(),
       tripDistance: GetDistanceFromArray(tripObject.coordsArray)
     }
-    await get("tripsArray").then((val)=>{
-      set("tripsArray", [...val, tripObject]);
-    }).catch(()=>{
-      set("tripsArray", [tripObject]);
-    })
+    if(tripObject.coordsArray.length > 0){
+      await get("tripsArray").then((val)=>{
+        set("tripsArray", [...val, tripObject]);
+      }).catch(()=>{
+        set("tripsArray", [tripObject]);
+      })
+    }
     setTrip([]);
     setDistance(0);
     navigator.geolocation.clearWatch(watchPositionIdex);
