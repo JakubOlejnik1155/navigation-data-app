@@ -124,7 +124,6 @@ const Header = ({ state, setState, setTrip, setDistance, setLog, log}) => {
         longitude: array[i + 1][1]
       })
     }
-    console.log(distance)
     return distance;
   }
 

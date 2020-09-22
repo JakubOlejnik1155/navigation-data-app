@@ -28,7 +28,7 @@ const AppContent = ({state, setState, trip, setTrip, distance, log}) => {
             <Route path="/map" exact>  {GoogleMap}</Route>
             <Route path="/my-trips" exact> <Trips state={state}/></Route>
             <Route path="/my-trips/:tripTime" >
-                <TripSpecificdata />
+                <TripSpecificdata state={state}/>
             </Route>
             <Route> <span>No souch route</span></Route>
         </Switch>
