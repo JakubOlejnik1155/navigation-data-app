@@ -76,10 +76,10 @@ function msToTime(milliseconds) {
 
 const TripSpecificdata = ({state}) => {
     const { tripTime } = useParams();
-    const [trip, setTrip] = React.useState();
+    const [trip, setTrip] = React.useState(null);
 
     const GoogleMap = React.useMemo(() => {
-        return <SpecificRouteMap state={state} trip={trip}/>
+        return trip ? <SpecificRouteMap state={state} trip={trip}/> : "Loading Map"
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [state.isNightModeOn])
     React.useEffect(()=> {
