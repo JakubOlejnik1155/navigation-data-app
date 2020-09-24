@@ -104,12 +104,12 @@ const TripSpecificdata = ({state}) => {
                     </Data>
                     <Data>
                         <sup style={{ fontWeight: 'normal', fontSize: '12px', fontStyle: 'italic'}}>MAX </sup>
-                        {trip && Math.round(findMax(trip.speedArray)*10)/10}
+                        {trip && Math.round(findMax(trip.speedArray) * 1.94384449*10)/10}
                         <DataUnits>knt</DataUnits>
                     </Data>
                     <Data>
                         <sup style={{ fontWeight: 'normal', fontSize: '12px', fontStyle: 'italic'}}>AVG </sup>
-                        {trip && Math.round(findAvg(trip.speedArray)*10)/10}
+                        {trip && Math.round(findAvg(trip.speedArray) * 1.94384449*10)/10}
                         <DataUnits>knt</DataUnits>
                     </Data>
                 </HeadData>

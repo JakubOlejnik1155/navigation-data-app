@@ -118,12 +118,17 @@ const Trip = ({ trip, state, setTripsArray }) => {
                 onClose={()=>setIsDialogOpen(false)}
                 aria-labelledby="alert-dialog-title"
                 aria-describedby="alert-dialog-description"
+                PaperProps={state.isNightModeOn ? {
+                    style: { backgroundColor: theme.dark, color: theme.light }
+                } : {}}
             >
                 <DialogTitle id="alert-dialog-title">
                     Warning!
                 </DialogTitle>
                 <DialogContent>
-                    <DialogContentText id="alert-dialog-description">
+                    <DialogContentText id="alert-dialog-description"
+                        style={state.isNightModeOn ? { color: theme.light } : { color: theme.dark }}
+                    >
                         Are you sure you want to remove this journey from your history? This operation is irreversible.
                     </DialogContentText>
                 </DialogContent>

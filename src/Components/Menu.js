@@ -14,6 +14,7 @@ import TripIcon from '../images/track.png';
 import { makeStyles, withStyles } from '@material-ui/core';
 import Wifi from '../images/wifi.svg';
 import NoWifi from '../images/no-wifi.svg';
+import MooringPoint from '../images/mooring-point.svg';
 
 import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
@@ -88,6 +89,8 @@ const Menu = ({state, setState}) => {
           <MenuLink link='/map' text="Map" icon={MapIcon} state={state} />
           <Divider className={state.isNightModeOn ? classes.light : ""}/>
           <MenuLink link='/my-trips' text="My Trips" icon={TripIcon} state={state} />
+          <Divider className={state.isNightModeOn ? classes.light : ""}/>
+          <MenuLink link='/harbors' text="Harbors" icon={MooringPoint} state={state} />
           <Divider className={state.isNightModeOn ? classes.light : ""}/>
         </List>
 

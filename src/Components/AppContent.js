@@ -7,6 +7,7 @@ import WeatcherData from './Routes/WeatherData';
 import Map from './Routes/Map';
 import Trips from './Routes/Trips';
 import TripSpecificdata from './Routes/TripSpecificData'
+import Harbors from './Routes/Harbors';
 const Container = styled.div`
     background-color: ${props => props.state.isNightModeOn ? theme.dark : theme.light};
     width: 100%;
@@ -27,6 +28,7 @@ const AppContent = ({state, setState, trip, setTrip, distance, log}) => {
             <Route path="/wind-data" exact> <WeatcherData state={state} setState={setState}/></Route>
             <Route path="/map" exact>  {GoogleMap}</Route>
             <Route path="/my-trips" exact> <Trips state={state}/></Route>
+            <Route path="/harbors" exact> <Harbors state={state}/></Route>
             <Route path="/my-trips/:tripTime" >
                 <TripSpecificdata state={state}/>
             </Route>
