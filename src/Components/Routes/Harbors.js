@@ -6,6 +6,7 @@ import styled from 'styled-components';
 import { theme } from '../../data/styleThemes';
 import { makeStyles } from '@material-ui/core/styles';
 import AddHarborDialog from './AddHarborDialog';
+import OneHarbor from './OneHarbor'
 
 const useStyles = makeStyles(() => ({
     fab: {
@@ -21,8 +22,7 @@ const useStyles = makeStyles(() => ({
 }));
 
 const Harborcontainer = styled.div`
-    // background-color: transparent;
-    background-color: #dddd;
+    background-color: transparent;
     color: ${props => props.state.isNightModeOn ? theme.red : theme.dark};
     width: 100%;
     padding: 5px;
@@ -38,7 +38,7 @@ const Harbors = ({state}) => {
     React.useEffect(()=>{
         console.log("render");
         async function getHarborArray(){
-            await get("harbourArray").then((array)=> {
+            await get("harborsArray").then((array)=> {
                 setHarborArray(array)
             })
         }
@@ -50,15 +50,16 @@ const Harbors = ({state}) => {
     },[])
 
     const addHarbor = async (pos, name, desc) => {
-        console.log(pos, name, desc);
         let array = []
         async function getHarbors(){
             await get("harborsArray").then(val => {
-                if (val) array = val;
+                if (val) {
+                    array = val;
+                }
             })
         }
-        getHarbors()
-        array.push({ pos, name, desc })
+        await getHarbors()
+        array = [...array, { pos, name, desc }]
         await set("harborsArray",array )
         setHarborArray(array)
         setIsDialogOpen(false);
@@ -70,7 +71,7 @@ const Harbors = ({state}) => {
                 state={state}
             >
                 {harborArray && harborArray.map(harbor =>(
-                    "harbor"
+                    <OneHarbor key={harbor.pos.lat} state={state} harbor={harbor}/>
                 ))}
                 <Fab
                     size="small"

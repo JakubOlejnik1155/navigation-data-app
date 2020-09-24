@@ -75,7 +75,11 @@ const AddHarborDialog = ({ state, isDialogOpen, setIsDialogOpen, addHarbor}) => 
                      }} color="secondary">
                     Cancel
                     </Button>
-                <Button onClick={() => addHarbor(position, document.querySelector('#harborName').value, document.querySelector('#description').value)} color="secondary">
+                <Button onClick={() => {
+                    setIsDialogOpen(false)
+                    addHarbor(position, document.querySelector('#harborName').value, document.querySelector('#description').value)
+                    setPosition()
+                    }} color="secondary">
                     Add harbor
                     </Button>
             </DialogActions>
