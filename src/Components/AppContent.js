@@ -8,6 +8,7 @@ import Map from './Routes/Map';
 import Trips from './Routes/Trips';
 import TripSpecificdata from './Routes/TripSpecificData'
 import Harbors from './Routes/Harbors';
+import Error404 from './Routes/Error404';
 const Container = styled.div`
     background-color: ${props => props.state.isNightModeOn ? theme.dark : theme.light};
     width: 100%;
@@ -32,7 +33,7 @@ const AppContent = ({state, setState, trip, setTrip, distance, log}) => {
             <Route path="/my-trips/:tripTime" >
                 <TripSpecificdata state={state}/>
             </Route>
-            <Route> <span>No souch route</span></Route>
+            <Route> <Error404 state={state}/></Route>
         </Switch>
     )
 
