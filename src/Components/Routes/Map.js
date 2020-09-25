@@ -8,6 +8,9 @@ import { makeStyles } from '@material-ui/core';
 import { theme } from '../../data/styleThemes';
 import SailboatIcon from '../../images/sailboat.svg';
 import DarkSailboatIcon from '../../images/darkmode-sailboat.svg';
+import { get } from 'idb-keyval';
+import Pin from '../../images/maps-and-location.png'
+
 
 const useStyles = makeStyles(() => ({
     backdrop: {
@@ -42,10 +45,23 @@ const darkOptions = {
 const Map = ({state}) => {
 
     const classes = useStyles();
+    const [harborsArray, setHarborArray] = React.useState();
     const [position, setPosition] = useState(null);
     const {isLoaded, loadError} = useLoadScript({
         googleMapsApiKey: process.env.REACT_APP_GOOGLE_API_KEY,
     })
+    useEffect(()=>{
+        async function getHarborArray() {
+            await get("harborsArray").then((array) => {
+                setHarborArray(array)
+            })
+        }
+        // eslint-disable-next-line no-unused-vars
+        let a = getHarborArray();
+        return () => {
+            a = false;
+        }
+    },[])
 
     useEffect(()=>{
         if (navigator.geolocation) {
@@ -94,6 +110,20 @@ const Map = ({state}) => {
                         lng: position.coords.longitude
                     }}/>
             }
+            {harborsArray && harborsArray.map(harbor => {
+                return (
+                    <Marker
+                        icon={{
+                            url: Pin,
+                            scaledSize: new window.google.maps.Size(25, 25)
+                        }}
+                        position={{
+                            lat: harbor.pos.lat,
+                            lng: harbor.pos.lng
+                        }}
+                    />
+                )
+            })}
         </GoogleMap>
      );
 }
