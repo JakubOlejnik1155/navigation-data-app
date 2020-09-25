@@ -71,7 +71,7 @@ const Harbors = ({state}) => {
                 state={state}
             >
                 {harborArray && harborArray.map(harbor =>(
-                    <OneHarbor key={harbor.pos.lat} state={state} harbor={harbor}/>
+                    <OneHarbor key={harbor.pos.lat} state={state} harbor={harbor} harborArray={harborArray} setHarborArray={setHarborArray}/>
                 ))}
                 <Fab
                     size="small"
