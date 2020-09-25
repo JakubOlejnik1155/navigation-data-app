@@ -45,7 +45,6 @@ const Harbors = ({state}) => {
     });
 
     React.useEffect(()=>{
-        console.log("render");
         async function getHarborArray(){
             await get("harborsArray").then((array)=> {
                 setHarborArray(array)

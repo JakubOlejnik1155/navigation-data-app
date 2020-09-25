@@ -162,7 +162,6 @@ const GpsData = ({state, trip, distance, log}) => {
     const [permision, setPermision] = useState(null);
 
     useEffect(()=>{
-       console.log('start gps tracking');
         let watch = null;
             if (navigator.geolocation) {
                 watch = navigator.geolocation.watchPosition(showPosition, errorGPS, {
@@ -172,7 +171,6 @@ const GpsData = ({state, trip, distance, log}) => {
                 });
             } else {
                 errorGPS();
-                console.log("Geolocation is not supported by this browser.");
             }
 
         function errorGPS(){
@@ -188,7 +186,6 @@ const GpsData = ({state, trip, distance, log}) => {
             })
         }
        return ( () => {
-           console.log("end tracking")
            navigator.geolocation.clearWatch(watch);
         })
     },[])

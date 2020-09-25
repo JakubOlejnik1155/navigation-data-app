@@ -61,7 +61,6 @@ const Header = ({ state, setState, setTrip, setDistance, setLog, log}) => {
     })
   }
   const handleStartTripButton = () => {
-    console.log('start gps tracking for TRIP');
     if(tripObject === null){
       tripObject = {
         startTime: new Date().toJSON(),
@@ -90,7 +89,6 @@ const Header = ({ state, setState, setTrip, setDistance, setLog, log}) => {
       await tripObject.coordsArray.forEach((element) => {
         if(element[0] === position.coords.latitude && element[1] === position.coords.longitude) {
           flag = true;
-          console.log("równe");
         }
       })
       if(!flag){
@@ -128,7 +126,6 @@ const Header = ({ state, setState, setTrip, setDistance, setLog, log}) => {
   }
 
   const handleEndingTrip = async () => {
-    console.log('end gps tracking for TRIP');
     tripObject = {
       ...tripObject,
       isfinished: true,
@@ -149,7 +146,6 @@ const Header = ({ state, setState, setTrip, setDistance, setLog, log}) => {
 
   };
   const handlePausingTrip = () => {
-    console.log('pause gps tracking for TRIP');
     navigator.geolocation.clearWatch(watchPositionIdex);
   };
 

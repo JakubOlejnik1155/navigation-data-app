@@ -166,7 +166,6 @@ const WeatcherData = ({state, setState}) => {
             });
         } else {
             errorGPS();
-            console.log("Geolocation is not supported by this browser.");
         }
 
         function errorGPS() {
@@ -211,7 +210,6 @@ const WeatcherData = ({state, setState}) => {
             });
         } else {
             errorGPS();
-            console.log("Geolocation is not supported by this browser.");
         }
 
         function errorGPS() {
@@ -232,7 +230,6 @@ const WeatcherData = ({state, setState}) => {
         }
     };
     const NewDepthFunction = () => {
-        console.log("new Depth");
 
         async function GetDepth(lat, lon) {
             const API = `https://cors-anywhere.herokuapp.com/https://maps.googleapis.com/maps/api/elevation/json?locations=${lat},${lon}&key=${process.env.REACT_APP_GOOGLE_API_KEY}`;
@@ -248,7 +245,6 @@ const WeatcherData = ({state, setState}) => {
             });
         } else {
             errorGPS();
-            console.log("Geolocation is not supported by this browser.");
         }
 
         function errorGPS() {
