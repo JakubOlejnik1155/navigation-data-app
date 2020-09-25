@@ -10,18 +10,7 @@ import OneHarbor from './OneHarbor';
 import MuiAlert from '@material-ui/lab/Alert';
 import Snackbar from '@material-ui/core/Snackbar';
 
-const useStyles = makeStyles(() => ({
-    fab: {
-        position: 'absolute',
-        color: theme.blue,
-        bottom: '8px',
-        right: '8px',
-        backgroundColor: theme.dark,
-        '&:hover': {
-            backgroundColor: theme.dark,
-        }
-    }
-}));
+
 
 const Harborcontainer = styled.div`
     background-color: transparent;
@@ -35,6 +24,18 @@ function Alert(props) {
     return <MuiAlert elevation={6} variant="filled" {...props} />;
 }
 const Harbors = ({state}) => {
+    const useStyles = makeStyles(() => ({
+        fab: {
+            position: 'absolute',
+            color: theme.blue,
+            bottom: '8px',
+            right: '8px',
+            backgroundColor: state.isNightModeOn ? 'gray' : theme.dark,
+            '&:hover': {
+                backgroundColor: state.isNightModeOn ? 'gray' : theme.dark,
+            }
+        }
+    }));
     const classes = useStyles();
     const [harborArray, setHarborArray] = React.useState();
     const [isDialogOpen, setIsDialogOpen] = React.useState(false);
@@ -43,6 +44,7 @@ const Harbors = ({state}) => {
         text: '-',
         severity: 'success',
     });
+
 
     React.useEffect(()=>{
         async function getHarborArray(){
