@@ -6,7 +6,9 @@ import styled from 'styled-components';
 import { theme } from '../../data/styleThemes';
 import { makeStyles } from '@material-ui/core/styles';
 import AddHarborDialog from './AddHarborDialog';
-import OneHarbor from './OneHarbor'
+import OneHarbor from './OneHarbor';
+import MuiAlert from '@material-ui/lab/Alert';
+import Snackbar from '@material-ui/core/Snackbar';
 
 const useStyles = makeStyles(() => ({
     fab: {
@@ -29,11 +31,18 @@ const Harborcontainer = styled.div`
     height: calc(100vh - 40px);
     overflow-y: scroll;
 `;
-
+function Alert(props) {
+    return <MuiAlert elevation={6} variant="filled" {...props} />;
+}
 const Harbors = ({state}) => {
     const classes = useStyles();
     const [harborArray, setHarborArray] = React.useState();
     const [isDialogOpen, setIsDialogOpen] = React.useState(false);
+    const [isSnackbar, setIsSnackbar] = React.useState({
+        open: false,
+        text: '-',
+        severity: 'success',
+    });
 
     React.useEffect(()=>{
         console.log("render");
@@ -48,21 +57,38 @@ const Harbors = ({state}) => {
             a = false;
         }
     },[])
+    const handleClose = () => {
+        setIsSnackbar({
+            open: false,
+            text: '-',
+        });
+    };
+    const handleShowSnackbar = (text, severity) => {
+        setIsSnackbar({
+            open: true,
+            text,
+            severity
+        })
+    }
 
     const addHarbor = async (pos, name, desc) => {
-        let array = []
-        async function getHarbors(){
-            await get("harborsArray").then(val => {
-                if (val) {
-                    array = val;
-                }
-            })
+        if(pos===undefined || name ==="") {
+            handleShowSnackbar("fill the information to add harbor", "warning");
+        } else{
+            let array = []
+            async function getHarbors(){
+                await get("harborsArray").then(val => {
+                    if (val) {
+                        array = val;
+                    }
+                })
+            }
+            await getHarbors()
+            array = [...array, { pos, name, desc }]
+            await set("harborsArray",array )
+            setHarborArray(array)
+            setIsDialogOpen(false);
         }
-        await getHarbors()
-        array = [...array, { pos, name, desc }]
-        await set("harborsArray",array )
-        setHarborArray(array)
-        setIsDialogOpen(false);
     }
 
     return (
@@ -88,6 +114,16 @@ const Harbors = ({state}) => {
                 setIsDialogOpen={setIsDialogOpen}
                 addHarbor={addHarbor}
             />
+            <Snackbar
+                open={isSnackbar.open}
+                autoHideDuration={3000}
+                onClose={handleClose}
+                anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
+            >
+                <Alert severity={isSnackbar.severity} >
+                    {isSnackbar.text}
+                </Alert>
+            </Snackbar>
         </>
      );
 }
