@@ -67,7 +67,6 @@ const InstallPopupp = () => {
         });
         get("allowed").then(val => {
             if(val === undefined) {
-                console.log('niema')
                 window.addEventListener("beforeinstallprompt", (e) => {
                     e.preventDefault();
                     deferredPrompt = e;
