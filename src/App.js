@@ -4,12 +4,14 @@ import styled from 'styled-components';
 import { theme } from './data/styleThemes';
 import AppContent from './Components/AppContent';
 import { get } from 'idb-keyval';
+import InstallPopupp from './Components/InstallPopup';
 
 const AppContainer = styled.div`
     width: 100%;
     min-height: 100vh;
     max-height: 100vh;
-    background-color: ${props => props.state.isNightModeOn ? theme.dark : theme.light}
+    background-color: ${props => props.state.isNightModeOn ? theme.dark : theme.light};
+    position: relative;
   `;
 
 function App() {
@@ -60,6 +62,7 @@ function App() {
         distance={distance}
         setState={setState}
       />
+      <InstallPopupp />
     </AppContainer>
   );
 }
