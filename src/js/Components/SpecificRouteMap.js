@@ -7,6 +7,10 @@ import DockSVG from '../../images/endTripPin.svg'
 import NoInternetConnectionIcon from '../../images/no-wifi.svg';
 import styled from 'styled-components'
 import { theme } from '../../data/styleThemes';
+import { Link } from 'react-router-dom';
+import ArrowBackIosRoundedIcon from '@material-ui/icons/ArrowBackIosRounded';
+import IconButton from '@material-ui/core/IconButton';
+
 
 const OfflineContainer = styled.div`
     width: 100%;
@@ -85,6 +89,12 @@ const SpecificRouteMap = ({state, trip}) => {
                     center={centerFromArray(trip.coordsArray)}
                     options={state.isNightModeOn ? darkOptions : options}
                 >
+                    <Link to="/my-trips" style={{ position: 'absolute', top: '8px', right: '8px' }}>
+                        <IconButton aria-label="back" style={{
+                            backgroundColor: theme.blue, height: '12px', width: '30px', borderRadius: '3px', border: `1px solid ${theme.dark}`}}>
+                            <ArrowBackIosRoundedIcon fontSize='small' style={{fill: theme.dark}}/>
+                        </IconButton>
+                    </Link>
                     <Polyline
                         path={refactorArray(trip.coordsArray)}
                         options={RouteOptions}
