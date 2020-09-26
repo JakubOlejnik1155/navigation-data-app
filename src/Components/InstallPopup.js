@@ -20,6 +20,7 @@ const PopupContainer = styled.div`
     position: absolute;
     bottom: 5px;
     left: 50%;
+    display: none;
     z-index: 999;
     text-align: center;
     transform: translate(-50%, 200%);
@@ -64,15 +65,26 @@ const InstallPopupp = () => {
         const closeBtn = document.querySelector('#close');
         closeBtn.addEventListener('click', () => {
             btnContainer.style.transform = 'translate(-50% , 500%)';
+            setTimeout(()=>{
+                btnContainer.style.display = 'none';
+            }, 1200)
         });
         get("allowed").then(val => {
             if(val === undefined) {
                 window.addEventListener("beforeinstallprompt", (e) => {
                     e.preventDefault();
                     deferredPrompt = e;
-                    if (allowed) btnContainer.style.transform = "translate(-50% , 0)";
+                    if (allowed) {
+                        btnContainer.style.display = 'block';
+                        setTimeout(() => {
+                            btnContainer.style.transform = "translate(-50% , 0)";
+                        }, 500)
+                    }
                     btn.addEventListener("click", (e) => {
                         btnContainer.style.transform = "translate(-50% , 500%)";
+                        setTimeout(() => {
+                            btnContainer.style.display = 'none';
+                        }, 1200)
                         deferredPrompt.prompt();
                         deferredPrompt.userChoice.then((choiceResult) => {
                             if (choiceResult.outcome === "accepted") {
