@@ -113,6 +113,7 @@ const Map = ({state}) => {
             {harborsArray && harborsArray.map(harbor => {
                 return (
                     <Marker
+                    key={harbor.name}
                         icon={{
                             url: Pin,
                             scaledSize: new window.google.maps.Size(25, 25)
