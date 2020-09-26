@@ -4,6 +4,8 @@ import styled from 'styled-components';
 import List from '@material-ui/core/List';
 import Divider from '@material-ui/core/Divider';
 import { set } from 'idb-keyval';
+import Button from '@material-ui/core/Button';
+
 
 import { theme } from '../../data/styleThemes';
 import MenuLink from './MenuLink';
@@ -93,8 +95,9 @@ const Menu = ({state, setState}) => {
           <MenuLink link='/harbors' text="Harbors" icon={MooringPoint} state={state} />
           <Divider className={state.isNightModeOn ? classes.light : ""}/>
         </List>
+        <Button style={{margin: 'auto auto 5px auto', color: state.isNightModeOn ? theme.light : theme.dark, fontSize: '12px', borderColor: theme.blue, width: '80%'}} variant="outlined" color='secondary'> Login / Register </Button>
 
-        <List style={{marginTop: 'auto'}}>
+          <List>
           <ListItem>
             <ListItemIcon >
               <BrightnessMediumRoundedIcon style={state.isNightModeOn ? {fill: theme.light} : {fill: theme.dark}}/>
