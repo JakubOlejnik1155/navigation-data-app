@@ -10,7 +10,8 @@ import SailboatIcon from '../../images/sailboat.svg';
 import DarkSailboatIcon from '../../images/darkmode-sailboat.svg';
 import { get } from 'idb-keyval';
 import Pin from '../../images/maps-and-location.png'
-
+import NoInternetConnectionIcon from '../../images/no-wifi.svg';
+import styled from 'styled-components'
 
 const useStyles = makeStyles(() => ({
     backdrop: {
@@ -20,6 +21,15 @@ const useStyles = makeStyles(() => ({
         flexDirection: 'column'
     }
 }));
+const OfflineContainer = styled.div`
+    width: 100%;
+    height: calc(100vh - 40px);
+    color: ${props => props.state.isNightModeOn ? theme.light : theme.dark};
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+`;
 
 const mapContainerStyle = {
     width: '100%',
@@ -90,42 +100,52 @@ const Map = ({state}) => {
         )
 
     return (
-        <GoogleMap
-            mapContainerStyle={mapContainerStyle}
-            zoom={8}
-            center={position ? {
-                lat: position.coords.latitude,
-                lng: position.coords.longitude
-            } : center}
-            options={state.isNightModeOn ? darkOptions : options}
-        >
-            {position &&
-                <Marker
-                    icon={{
-                        url: state.isNightModeOn ? DarkSailboatIcon : SailboatIcon,
-                        scaledSize: new window.google.maps.Size(20,20),
-                    }}
-                    position={{
+        <>
+        {navigator.onLine ? (
+                <GoogleMap
+                    mapContainerStyle={mapContainerStyle}
+                    zoom={8}
+                    center={position ? {
                         lat: position.coords.latitude,
                         lng: position.coords.longitude
-                    }}/>
-            }
-            {harborsArray && harborsArray.map(harbor => {
-                return (
-                    <Marker
-                    key={harbor.name}
-                        icon={{
-                            url: Pin,
-                            scaledSize: new window.google.maps.Size(25, 25)
-                        }}
-                        position={{
-                            lat: harbor.pos.lat,
-                            lng: harbor.pos.lng
-                        }}
-                    />
-                )
-            })}
-        </GoogleMap>
+                    } : center}
+                    options={state.isNightModeOn ? darkOptions : options}
+                >
+                    {position &&
+                        <Marker
+                            icon={{
+                                url: state.isNightModeOn ? DarkSailboatIcon : SailboatIcon,
+                                scaledSize: new window.google.maps.Size(20, 20),
+                            }}
+                            position={{
+                                lat: position.coords.latitude,
+                                lng: position.coords.longitude
+                            }} />
+                    }
+                    {harborsArray && harborsArray.map(harbor => {
+                        return (
+                            <Marker
+                                key={harbor.name}
+                                icon={{
+                                    url: Pin,
+                                    scaledSize: new window.google.maps.Size(25, 25)
+                                }}
+                                position={{
+                                    lat: harbor.pos.lat,
+                                    lng: harbor.pos.lng
+                                }}
+                            />
+                        )
+                    })}
+                </GoogleMap>
+        ):(
+            <OfflineContainer state={state}>
+                <img src={NoInternetConnectionIcon} alt="no-internet-connection" style={{ width: '80px', height: '80px', marginBottom: '15px' }} />
+                <p style={{ fontFamily: 'Poppins, sans-serif', fontSize: '18px' }}>You need to go online to see map</p>
+            </OfflineContainer>
+        )}
+        </>
+
      );
 }
 
