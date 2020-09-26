@@ -11,6 +11,12 @@
       "src": "/favicons/favicon.ico",
       "type": "image/ico",
       "sizes": "48x48"
+    },
+    {
+      "src": "/favicons/maskable_icon.png",
+      "sizes": "196x196",
+      "type": "image/png",
+      "purpose": "maskable"
     }
   ],
   "start_url": ".",
