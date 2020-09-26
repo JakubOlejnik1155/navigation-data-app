@@ -4,6 +4,20 @@ import MapStyles from '../../data/mapStyles/MapStyles';
 import DarkMapStyles from '../../data/mapStyles/DarkMapStyles';
 import SailSVG from '../../images/startTripPin.svg'
 import DockSVG from '../../images/endTripPin.svg'
+import NoInternetConnectionIcon from '../../images/no-wifi.svg';
+import styled from 'styled-components'
+import { theme } from '../../data/styleThemes';
+
+const OfflineContainer = styled.div`
+    width: 100%;
+    height: 100%;
+    color: ${props => props.state.isNightModeOn ? theme.light : theme.dark};
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+`;
+
 
 const mapContainerStyle = {
     width: '100%',
@@ -63,35 +77,44 @@ const SpecificRouteMap = ({state, trip}) => {
             <span style={{ fontFamily: 'Poppins, sans-serif', fontSize: '18px' }}>Loading Map...</span>
     )
     return (
-            <GoogleMap
-                mapContainerStyle={mapContainerStyle}
-                zoom={6}
-                center={centerFromArray(trip.coordsArray)}
-                options={state.isNightModeOn ? darkOptions : options}
-            >
-            <Polyline
-                path={refactorArray(trip.coordsArray)}
-                options={RouteOptions}
-            />
-            <Marker
-                icon={{
-                    url: SailSVG,
-                    scaledSize: new window.google.maps.Size(30, 30),
-                }}
-                position={{
-                    lat: trip.coordsArray[0][0],
-                    lng: trip.coordsArray[0][1]
-                }} />
-            <Marker
-                icon={{
-                    url: DockSVG,
-                    scaledSize: new window.google.maps.Size(30, 30),
-                }}
-                position={{
-                    lat: trip.coordsArray[trip.coordsArray.length-1][0],
-                    lng: trip.coordsArray[trip.coordsArray.length-1][1]
-                }} />
-            </GoogleMap>
+        <>
+            {navigator.onLine ? (
+                <GoogleMap
+                    mapContainerStyle={mapContainerStyle}
+                    zoom={6}
+                    center={centerFromArray(trip.coordsArray)}
+                    options={state.isNightModeOn ? darkOptions : options}
+                >
+                    <Polyline
+                        path={refactorArray(trip.coordsArray)}
+                        options={RouteOptions}
+                    />
+                    <Marker
+                        icon={{
+                            url: SailSVG,
+                            scaledSize: new window.google.maps.Size(30, 30),
+                        }}
+                        position={{
+                            lat: trip.coordsArray[0][0],
+                            lng: trip.coordsArray[0][1]
+                        }} />
+                    <Marker
+                        icon={{
+                            url: DockSVG,
+                            scaledSize: new window.google.maps.Size(30, 30),
+                        }}
+                        position={{
+                            lat: trip.coordsArray[trip.coordsArray.length - 1][0],
+                            lng: trip.coordsArray[trip.coordsArray.length - 1][1]
+                        }} />
+                </GoogleMap>
+            ) : (
+                    <OfflineContainer state={state}>
+                        <img src={NoInternetConnectionIcon} alt="no-internet-connection" style={{ width: '80px', height: '80px', marginBottom: '15px' }} />
+                        <p style={{ fontFamily: 'Poppins, sans-serif', fontSize: '18px' }}>You need to go online to see map</p>
+                    </OfflineContainer>
+            )}
+        </>
      );
 }
 

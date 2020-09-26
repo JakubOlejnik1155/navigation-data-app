@@ -3,6 +3,20 @@ import {GoogleMap, useLoadScript, Marker} from "@react-google-maps/api";
 import MapStyles from '../../data/mapStyles/MapStyles';
 import DarkMapStyles from '../../data/mapStyles/DarkMapStyles';
 import Pin from '../../images/maps-and-location.png'
+import NoInternetConnectionIcon from '../../images/no-wifi.svg';
+import styled from 'styled-components'
+import { theme } from '../../data/styleThemes';
+
+
+const OfflineContainer = styled.div`
+    width: 100%;
+    height: 250px;
+    color: ${props => props.state.isNightModeOn ? theme.light : theme.dark};
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+`;
 const mapContainerStyle = {
     height: "250px",
     width: "100%",
@@ -43,17 +57,17 @@ export default function AddHarborMap({state, position, setPosition}) {
     if (!isLoaded) return "Loading...";
 
     return (
-        <div>
-
-            <GoogleMap
-                mapContainerStyle={mapContainerStyle}
-                zoom={2}
-                center={center}
-                options={state.isNightModeOn ? darkOptions : options}
-                onClick={onMapClick}
-                onLoad={onMapLoad}
-            >
-                   {position && (
+        <>
+            {navigator.onLine ? (
+                <GoogleMap
+                    mapContainerStyle={mapContainerStyle}
+                    zoom={2}
+                    center={center}
+                    options={state.isNightModeOn ? darkOptions : options}
+                    onClick={onMapClick}
+                    onLoad={onMapLoad}
+                >
+                    {position && (
                         <Marker
                             draggable
                             onDragEnd={onMapClick}
@@ -64,8 +78,15 @@ export default function AddHarborMap({state, position, setPosition}) {
                                 scaledSize: new window.google.maps.Size(40, 40),
                             }}
                         />
-                   )}
-            </GoogleMap>
-        </div>
+                    )}
+                </GoogleMap>
+            ) : (
+                <OfflineContainer state={state}>
+                    <img src={NoInternetConnectionIcon} alt="no-internet-connection" style={{ width: '40px', height: '40px', marginBottom: '15px' }} />
+                    <p style={{ fontFamily: 'Poppins, sans-serif', fontSize: '16px' }}>You need to go online to see map</p>
+                </OfflineContainer>
+            )}
+
+        </>
     );
 }
