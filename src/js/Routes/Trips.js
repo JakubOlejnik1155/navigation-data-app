@@ -3,7 +3,7 @@ import { get } from 'idb-keyval';
 import  styled  from 'styled-components';
 import { theme } from '../../data/styleThemes';
 import SailingSVG from '../../images/sailing.svg';
-import Trip from '../Trip';
+import Trip from '../Components/Trip';
 
 const TripsContainer = styled.div`
     background-color: transparent;

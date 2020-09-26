@@ -1,8 +1,8 @@
 import { del, get, set } from 'idb-keyval';
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components'
-import { theme } from '../data/styleThemes';
-import Logo from '../images/anchor.svg';
+import { theme } from '../../data/styleThemes';
+import Logo from '../../images/anchor.svg';
 
 
 const PopupContainer = styled.div`

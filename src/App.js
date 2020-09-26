@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import NavBar from './Components/NavBar';
+import NavBar from './js/Components/NavBar';
 import styled from 'styled-components';
 import { theme } from './data/styleThemes';
-import AppContent from './Components/AppContent';
+import AppContent from './js/Routes/AppContent';
 import { get } from 'idb-keyval';
-import InstallPopupp from './Components/InstallPopup';
+import InstallPopupp from './js/Components/InstallPopup';
 
 const AppContainer = styled.div`
     width: 100%;

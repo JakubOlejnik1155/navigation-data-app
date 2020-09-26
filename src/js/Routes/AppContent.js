@@ -1,14 +1,14 @@
 import React from 'react';
 import styled from 'styled-components';
 import { Switch, Route } from 'react-router';
-import { theme } from '../data/styleThemes';
-import GpsData from './Routes/GpsData';
-import WeatcherData from './Routes/WeatherData';
-import Map from './Routes/Map';
-import Trips from './Routes/Trips';
-import TripSpecificdata from './Routes/TripSpecificData'
-import Harbors from './Routes/Harbors';
-import Error404 from './Routes/Error404';
+import { theme } from '../../data/styleThemes';
+import GpsData from './GpsData';
+import WeatcherData from './WeatherData';
+import Map from './Map';
+import Trips from './Trips';
+import TripSpecificdata from './TripSpecificData'
+import Harbors from './Harbors';
+import Error404 from './Error404';
 const Container = styled.div`
     background-color: ${props => props.state.isNightModeOn ? theme.dark : theme.light};
     width: 100%;

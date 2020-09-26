@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import { GoogleMap, useLoadScript, Marker} from '@react-google-maps/api'
-import MapStyles from './mapStyles/MapStyles';
-import DarkMapStyles from './mapStyles/DarkMapStyles';
+import MapStyles from '../../data/mapStyles/MapStyles';
+import DarkMapStyles from '../../data/mapStyles/DarkMapStyles';
 import Backdrop from '@material-ui/core/Backdrop';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import { makeStyles } from '@material-ui/core';

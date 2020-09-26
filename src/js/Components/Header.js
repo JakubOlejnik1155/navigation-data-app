@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
-import {theme} from '../data/styleThemes';
-import AnchorImage from '../images/anchor.svg';
+import { theme } from '../../data/styleThemes';
+import AnchorImage from '../../images/anchor.svg';
 import IconButton from '@material-ui/core/IconButton';
 import MenuRoundedIcon from '@material-ui/icons/MenuRounded';
 import PlayArrowRoundedIcon from '@material-ui/icons/PlayArrowRounded';

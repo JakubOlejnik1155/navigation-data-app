@@ -4,7 +4,7 @@ import {useParams} from 'react-router-dom';
 import styled from 'styled-components';
 import { theme } from '../../data/styleThemes';
 import formatcoords from 'formatcoords';
-import SpecificRouteMap from './SpecificRouteMap';
+import SpecificRouteMap from '../Components/SpecificRouteMap';
 
 const Container = styled.div`
     background-color: ${(props) => props.state.isNightModeOn === true ? theme.dark : theme.light};

@@ -5,8 +5,8 @@ import AddIcon from '@material-ui/icons/Add';
 import styled from 'styled-components';
 import { theme } from '../../data/styleThemes';
 import { makeStyles } from '@material-ui/core/styles';
-import AddHarborDialog from './AddHarborDialog';
-import OneHarbor from './OneHarbor';
+import AddHarborDialog from '../Components/AddHarborDialog';
+import OneHarbor from '../Components/OneHarbor';
 import MuiAlert from '@material-ui/lab/Alert';
 import Snackbar from '@material-ui/core/Snackbar';
 

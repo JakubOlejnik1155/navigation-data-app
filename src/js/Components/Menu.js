@@ -5,16 +5,16 @@ import List from '@material-ui/core/List';
 import Divider from '@material-ui/core/Divider';
 import { set } from 'idb-keyval';
 
-import { theme } from '../data/styleThemes';
+import { theme } from '../../data/styleThemes';
 import MenuLink from './MenuLink';
-import BoatIcon from '../images/boat.png';
-import WeatherIcon from '../images/wind.png';
-import MapIcon from '../images/maps-and-location.png';
-import TripIcon from '../images/track.png';
+import BoatIcon from '../../images/boat.png';
+import WeatherIcon from '../../images/wind.png';
+import MapIcon from '../../images/maps-and-location.png';
+import TripIcon from '../../images/track.png';
 import { makeStyles, withStyles } from '@material-ui/core';
-import Wifi from '../images/wifi.svg';
-import NoWifi from '../images/no-wifi.svg';
-import MooringPoint from '../images/mooring-point.svg';
+import Wifi from '../../images/wifi.svg';
+import NoWifi from '../../images/no-wifi.svg';
+import MooringPoint from '../../images/mooring-point.svg';
 
 import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';

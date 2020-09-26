@@ -1,7 +1,7 @@
 import React from 'react';
 import { GoogleMap, useLoadScript, Polyline, Marker} from '@react-google-maps/api'
-import MapStyles from './mapStyles/MapStyles';
-import DarkMapStyles from './mapStyles/DarkMapStyles';
+import MapStyles from '../../data/mapStyles/MapStyles';
+import DarkMapStyles from '../../data/mapStyles/DarkMapStyles';
 import SailSVG from '../../images/startTripPin.svg'
 import DockSVG from '../../images/endTripPin.svg'
 
