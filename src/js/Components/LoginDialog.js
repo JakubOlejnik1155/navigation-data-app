@@ -14,12 +14,25 @@ import {withStyles} from "@material-ui/core";
 import { useForm } from 'react-hook-form';
 import MuiAlert from "@material-ui/lab/Alert";
 import Snackbar from '@material-ui/core/Snackbar';
+import {postFetchFunction} from '../../data/functions';
+import CircularProgress from "@material-ui/core/CircularProgress";
+import Backdrop from "@material-ui/core/Backdrop";
+import {makeStyles} from "@material-ui/core/styles";
 
 function Alert(props) {
     return <MuiAlert elevation={6} variant="filled" {...props} />;
 }
+const useStyles = makeStyles(() => ({
+    backdrop: {
+        zIndex: 999,
+        color: theme.blue,
+        display: 'flex',
+        flexDirection: 'column'
+    },
+}));
 
 const LoginDialog = ({state, isLoginDialogOpen, setIsLoginDialogOpen}) => {
+    const classes = useStyles();
     const CssTextField = withStyles({
         root: {
             "& label": {
@@ -46,6 +59,7 @@ const LoginDialog = ({state, isLoginDialogOpen, setIsLoginDialogOpen}) => {
         text: '-',
         severity: '',
     });
+    const [isLoading, setIsLoading] = React.useState(false)
 
     const handleCloseSnackbar = () => {
         setIsSnackbar({
@@ -100,7 +114,25 @@ const LoginDialog = ({state, isLoginDialogOpen, setIsLoginDialogOpen}) => {
             flag = false;
         }
         if (flag){
-            console.log("register", data)
+            try{
+                setIsLoading(true)
+                postFetchFunction( '/register', {
+                    email: data.registerEmail,
+                    password: data.registerPassword,
+                    password2: data.registerPassword2})
+                    .then(response => {
+                        if(response.error) handleShowSnackbar(response.msg, 'error')
+                        else{
+                            setIsLoading(false);
+                            setIsLoginDialogOpen(false);
+                            handleShowSnackbar("Successfully logged in", 'success');
+                        }
+
+                    })
+            }catch (e) {
+                setIsLoading(false)
+                handleShowSnackbar('Something get wrong', 'error');
+            }
         }
     }
 
@@ -180,6 +212,12 @@ const LoginDialog = ({state, isLoginDialogOpen, setIsLoginDialogOpen}) => {
                                 <ExitToAppTwoToneIcon/>
                             </Button>
                         </DialogActions>
+                        {isLoading && (
+                            <Backdrop className={classes.backdrop} open={isLoading}>
+                                <CircularProgress color="inherit" />
+                                <span style={{fontFamily: 'Poppins, sans-serif', fontSize: '18px'}}>Give us a second...</span>
+                            </Backdrop>
+                        )}
                         </>
                     ) : (
                         <>
@@ -259,6 +297,12 @@ const LoginDialog = ({state, isLoginDialogOpen, setIsLoginDialogOpen}) => {
                                     <ExitToAppTwoToneIcon/>
                                 </Button>
                             </DialogActions>
+                            {isLoading && (
+                                <Backdrop className={classes.backdrop} open={isLoading}>
+                                    <CircularProgress color="inherit" />
+                                    <span style={{fontFamily: 'Poppins, sans-serif', fontSize: '18px'}}>Give us a second...</span>
+                                </Backdrop>
+                            )}
                         </>
                     )}
             </Dialog>
