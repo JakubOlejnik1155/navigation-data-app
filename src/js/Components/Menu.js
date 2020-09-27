@@ -100,7 +100,7 @@ const Menu = ({state, setState}) => {
               <MenuLink link='/harbors' text="Harbors" icon={MooringPoint} state={state} />
               <Divider className={state.isNightModeOn ? classes.light : ""}/>
             </List>
-            {navigator.onLine &&(
+            {navigator.onLine ?(
                 <>
                   {LoginAPI.isLogin.login ? (
                       <>
@@ -138,6 +138,8 @@ const Menu = ({state, setState}) => {
                       </Button>
                   )}
                 </>
+            ):(
+                <div style={{marginTop:'auto'}} />
             )}
               <List>
               <ListItem>
