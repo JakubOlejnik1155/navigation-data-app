@@ -3,8 +3,10 @@ import NavBar from './js/Components/NavBar';
 import styled from 'styled-components';
 import { theme } from './data/styleThemes';
 import AppContent from './js/Routes/AppContent';
-import { get } from 'idb-keyval';
+import {get} from 'idb-keyval';
 import InstallPopupp from './js/Components/InstallPopup';
+import {getFetchFunction} from "./data/functions";
+import {LoginContext} from "./js/ContextLoginApi";
 
 const AppContainer = styled.div`
     width: 100%;
@@ -22,7 +24,7 @@ function App() {
     isTripActive: false,
     isWeatherDataWarning: true,
   });
-
+  const LoginAPI = React.useContext(LoginContext)
   const [trip, setTrip] = React.useState([]);
   const [distance, setDistance] =React.useState(0);
   const [log, setLog] = React.useState(0)
@@ -40,6 +42,26 @@ function App() {
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
+  useEffect(()=>{
+      async function checkLogin(){
+        await get("jwt").then(value => {
+          if(value !== undefined && navigator.onLine){
+            try{
+              getFetchFunction('/')
+              .then(response => {
+                if (response.ok){
+                  LoginAPI.setIsLogin({user: response.object, login: true});
+                }
+              })
+            }catch (e) {
+              console.log(e)
+            }
+          }
+        })
+      }
+      checkLogin();
+    // eslint-disable-next-line
+  }, [])
 
   return (
     <AppContainer

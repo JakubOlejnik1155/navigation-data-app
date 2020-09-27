@@ -1,4 +1,5 @@
 import {SERVER} from './breakpoints';
+import {get} from "idb-keyval";
 
 
 export const postFetchFunction = async (concatURL, data) => {
@@ -12,3 +13,16 @@ export const postFetchFunction = async (concatURL, data) => {
     const response = await fetch(SERVER.concat(concatURL), options);
     return response.json();
 };
+export const getFetchFunction = async (concatURL) => {
+    let response = null;
+    await get("jwt").then(async value => {
+        const options = {
+            method: 'GET',
+            headers: {
+                'auth-token': `${value}`
+            }
+        };
+        response = await fetch(SERVER.concat(concatURL), options);
+    })
+    return response.json();
+}
