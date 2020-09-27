@@ -3,7 +3,7 @@ import SwipeableDrawer from '@material-ui/core/SwipeableDrawer';
 import styled from 'styled-components';
 import List from '@material-ui/core/List';
 import Divider from '@material-ui/core/Divider';
-import { set } from 'idb-keyval';
+import {del, set} from 'idb-keyval';
 import Button from '@material-ui/core/Button';
 
 
@@ -13,7 +13,7 @@ import BoatIcon from '../../images/boat.png';
 import WeatherIcon from '../../images/wind.png';
 import MapIcon from '../../images/maps-and-location.png';
 import TripIcon from '../../images/track.png';
-import { makeStyles, withStyles } from '@material-ui/core';
+import {makeStyles, Typography, withStyles} from '@material-ui/core';
 import Wifi from '../../images/wifi.svg';
 import NoWifi from '../../images/no-wifi.svg';
 import MooringPoint from '../../images/mooring-point.svg';
@@ -25,6 +25,7 @@ import ListItemText from '@material-ui/core/ListItemText';
 import Switch from '@material-ui/core/Switch';
 import BrightnessMediumRoundedIcon from '@material-ui/icons/BrightnessMediumRounded';
 import LoginDialog from "./LoginDialog";
+import {LoginContext} from "../ContextLoginApi";
 
 
 const MenuList = styled.div`
@@ -69,6 +70,7 @@ const ModeSwitch = withStyles({
 
 const Menu = ({state, setState}) => {
 
+  const LoginAPI = React.useContext(LoginContext);
   const classes = useStyles();
   const [isLoginDialogOpen, setIsLoginDialogOpen] = React.useState(false)
 
@@ -98,17 +100,41 @@ const Menu = ({state, setState}) => {
               <MenuLink link='/harbors' text="Harbors" icon={MooringPoint} state={state} />
               <Divider className={state.isNightModeOn ? classes.light : ""}/>
             </List>
-            <Button style={{margin: 'auto auto 5px auto', color: state.isNightModeOn ? theme.light : theme.dark, fontSize: '12px', borderColor: theme.blue, width: '80%'}}
-                    variant="outlined"
-                    color='secondary'
-                    onClick={()=> {
-                      setState({...state, isMenuOpened: false})
-                      setIsLoginDialogOpen(true);
-                    }}
-            >
-              Login / Register
-            </Button>
-
+            {LoginAPI.isLogin.login ? (
+                <>
+                  <Typography
+                      style={{margin: 'auto auto 5px auto', color: state.isNightModeOn ? theme.light : theme.dark,}}
+                      variant='body2'
+                  >
+                    <span style={{fontWeight: '100', display: 'block',width: '100%',fontStyle: 'italic'}}>logged as:  </span>
+                    <span style={{fontWeight: 'bold'}}>{LoginAPI.isLogin.user.email.split('@')[0]}</span>
+                  </Typography>
+                  <Button style={{margin: '2px auto', color: state.isNightModeOn ? theme.red : theme.red, fontSize: '12px', borderColor: theme.red, width: '50%'}}
+                          variant="outlined"
+                          color='secondary'
+                          onClick={async ()=>{
+                            await del("jwt")
+                            LoginAPI.setIsLogin({
+                              login: false,
+                              user: null
+                            })
+                          }}
+                  >
+                    logout
+                  </Button>
+                </>
+            ) : (
+                <Button style={{margin: 'auto auto 5px auto', color: state.isNightModeOn ? theme.light : theme.dark, fontSize: '12px', borderColor: theme.blue, width: '80%'}}
+                        variant="outlined"
+                        color='secondary'
+                        onClick={()=> {
+                          setState({...state, isMenuOpened: false})
+                          setIsLoginDialogOpen(true);
+                        }}
+                >
+                  Login / Register
+                </Button>
+            )}
               <List>
               <ListItem>
                 <ListItemIcon >

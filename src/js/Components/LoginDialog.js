@@ -18,6 +18,8 @@ import {postFetchFunction} from '../../data/functions';
 import CircularProgress from "@material-ui/core/CircularProgress";
 import Backdrop from "@material-ui/core/Backdrop";
 import {makeStyles} from "@material-ui/core/styles";
+import {LoginContext} from '../ContextLoginApi'
+import {set} from "idb-keyval";
 
 function Alert(props) {
     return <MuiAlert elevation={6} variant="filled" {...props} />;
@@ -32,6 +34,7 @@ const useStyles = makeStyles(() => ({
 }));
 
 const LoginDialog = ({state, isLoginDialogOpen, setIsLoginDialogOpen}) => {
+    const loginAPI = React.useContext(LoginContext);
     const classes = useStyles();
     const CssTextField = withStyles({
         root: {
@@ -92,7 +95,30 @@ const LoginDialog = ({state, isLoginDialogOpen, setIsLoginDialogOpen}) => {
             flag = false;
         }
         if (flag){
-            console.log("login",data)
+            try{
+                setIsLoading(true)
+                postFetchFunction( '/login', {
+                    email: data.loginEmail,
+                    password: data.loginPassword
+                })
+                    .then(async response => {
+                        if(response.error) {
+                            handleShowSnackbar(response.msg, 'error')
+                            setIsLoading(false);
+                        }
+                        else{
+                            setIsLoading(false);
+                            setIsLoginDialogOpen(false);
+                            loginAPI.setIsLogin({user: response.user, login: true});
+                            handleShowSnackbar("Successfully logged in", 'success');
+                            await set("jwt", response.jwt)
+                        }
+
+                    })
+            }catch (e) {
+                setIsLoading(false)
+                handleShowSnackbar('Something get wrong', 'error');
+            }
         }
     }
     const onRegister = (data) => {
@@ -120,12 +146,17 @@ const LoginDialog = ({state, isLoginDialogOpen, setIsLoginDialogOpen}) => {
                     email: data.registerEmail,
                     password: data.registerPassword,
                     password2: data.registerPassword2})
-                    .then(response => {
-                        if(response.error) handleShowSnackbar(response.msg, 'error')
+                    .then(async response => {
+                        if(response.error) {
+                            setIsLoading(false);
+                            handleShowSnackbar(response.msg, 'error')
+                        }
                         else{
                             setIsLoading(false);
                             setIsLoginDialogOpen(false);
+                            loginAPI.setIsLogin({user: response.user, login: true});
                             handleShowSnackbar("Successfully logged in", 'success');
+                            await set("jwt", response.jwt)
                         }
 
                     })
