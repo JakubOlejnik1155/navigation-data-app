@@ -100,40 +100,44 @@ const Menu = ({state, setState}) => {
               <MenuLink link='/harbors' text="Harbors" icon={MooringPoint} state={state} />
               <Divider className={state.isNightModeOn ? classes.light : ""}/>
             </List>
-            {LoginAPI.isLogin.login ? (
+            {navigator.onLine &&(
                 <>
-                  <Typography
-                      style={{margin: 'auto auto 5px auto', color: state.isNightModeOn ? theme.light : theme.dark,}}
-                      variant='body2'
-                  >
-                    <span style={{fontWeight: '100', display: 'block',width: '100%',fontStyle: 'italic'}}>logged as:  </span>
-                    <span style={{fontWeight: 'bold'}}>{LoginAPI.isLogin.user.email.split('@')[0]}</span>
-                  </Typography>
-                  <Button style={{margin: '2px auto', color: state.isNightModeOn ? theme.red : theme.red, fontSize: '12px', borderColor: theme.red, width: '50%'}}
-                          variant="outlined"
-                          color='secondary'
-                          onClick={async ()=>{
-                            await del("jwt")
-                            LoginAPI.setIsLogin({
-                              login: false,
-                              user: null
-                            })
-                          }}
-                  >
-                    logout
-                  </Button>
+                  {LoginAPI.isLogin.login ? (
+                      <>
+                        <Typography
+                            style={{margin: 'auto auto 5px auto', color: state.isNightModeOn ? theme.light : theme.dark,}}
+                            variant='body2'
+                        >
+                          <span style={{fontWeight: '100', display: 'block',width: '100%',fontStyle: 'italic'}}>logged as:  </span>
+                          <span style={{fontWeight: 'bold'}}>{LoginAPI.isLogin.user.email.split('@')[0]}</span>
+                        </Typography>
+                        <Button style={{margin: '2px auto', color: state.isNightModeOn ? theme.red : theme.red, fontSize: '12px', borderColor: theme.red, width: '50%'}}
+                                variant="outlined"
+                                color='secondary'
+                                onClick={async ()=>{
+                                  await del("jwt")
+                                  LoginAPI.setIsLogin({
+                                    login: false,
+                                    user: null
+                                  })
+                                }}
+                        >
+                          logout
+                        </Button>
+                      </>
+                  ) : (
+                      <Button style={{margin: 'auto auto 5px auto', color: state.isNightModeOn ? theme.light : theme.dark, fontSize: '12px', borderColor: theme.blue, width: '80%'}}
+                              variant="outlined"
+                              color='secondary'
+                              onClick={()=> {
+                                setState({...state, isMenuOpened: false})
+                                setIsLoginDialogOpen(true);
+                              }}
+                      >
+                        Login / Register
+                      </Button>
+                  )}
                 </>
-            ) : (
-                <Button style={{margin: 'auto auto 5px auto', color: state.isNightModeOn ? theme.light : theme.dark, fontSize: '12px', borderColor: theme.blue, width: '80%'}}
-                        variant="outlined"
-                        color='secondary'
-                        onClick={()=> {
-                          setState({...state, isMenuOpened: false})
-                          setIsLoginDialogOpen(true);
-                        }}
-                >
-                  Login / Register
-                </Button>
             )}
               <List>
               <ListItem>
