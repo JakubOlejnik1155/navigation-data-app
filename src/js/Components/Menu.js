@@ -3,7 +3,7 @@ import SwipeableDrawer from '@material-ui/core/SwipeableDrawer';
 import styled from 'styled-components';
 import List from '@material-ui/core/List';
 import Divider from '@material-ui/core/Divider';
-import {del, set} from 'idb-keyval';
+import {del, get, set} from 'idb-keyval';
 import Button from '@material-ui/core/Button';
 
 
@@ -26,8 +26,12 @@ import Switch from '@material-ui/core/Switch';
 import BrightnessMediumRoundedIcon from '@material-ui/icons/BrightnessMediumRounded';
 import LoginDialog from "./LoginDialog";
 import {LoginContext} from "../ContextLoginApi";
+import Snackbar from "@material-ui/core/Snackbar";
+import MuiAlert from "@material-ui/lab/Alert";
 
-
+function Alert(props) {
+  return <MuiAlert elevation={6} variant="filled" {...props} />;
+}
 const MenuList = styled.div`
   background-color: ${props => props.state.isNightModeOn ? theme.dark : theme.light};
   padding: 10px;
@@ -73,6 +77,62 @@ const Menu = ({state, setState}) => {
   const LoginAPI = React.useContext(LoginContext);
   const classes = useStyles();
   const [isLoginDialogOpen, setIsLoginDialogOpen] = React.useState(false)
+  const [isSnackbar, setIsSnackbar] = React.useState({
+    open: false,
+    text: '-',
+    severity: '',
+  });
+
+
+  const arrayUnique = array => {
+    let a = array.concat();
+    for(let i=0; i<a.length; ++i) {
+      for(let j=i+1; j<a.length; ++j) {
+        if(a[i] === a[j])
+          a.splice(j--, 1);
+      }
+    }
+    return a;
+  }
+  const handleCloseSnackbar = () => {
+    setIsSnackbar({
+      open: false,
+      text: '-',
+    });
+  };
+  const handleShowSnackbar = (text, severity) => {
+    setIsSnackbar({
+      open: true,
+      text,
+      severity
+    })
+  }
+  const handlingMargeData = async () => {
+    const onlineObject = LoginAPI.isLogin.user;
+    console.log(onlineObject);
+    let offlineObject = {}, offlineLog, offlineHarborsArray, offlineTripsArray;
+    await get("log").then(async value=> {
+      offlineLog = value
+      if (offlineLog > onlineObject.log) {
+        offlineObject ={...offlineObject, log: offlineLog}
+      }else {
+        await set("log", onlineObject.log)
+      }
+    });
+    await get("harborsArray").then( async value => {
+      offlineHarborsArray = value
+      const array = onlineObject.harborsArray.concat(offlineHarborsArray)
+      offlineObject ={...offlineObject, harborsArray: arrayUnique(array)}
+      await set("harborsArray", arrayUnique(array))
+    });
+    await get("tripsArray").then(async value => {
+      offlineTripsArray = value
+      const array = onlineObject.tripsArray.concat(offlineTripsArray)
+      offlineObject ={...offlineObject, tripsArray: arrayUnique(array)}
+      await set("tripsArray", arrayUnique(array))
+    });
+    console.log(offlineObject)
+  }
 
   return (
       <>
@@ -111,7 +171,7 @@ const Menu = ({state, setState}) => {
                           <span style={{fontWeight: '100', display: 'block',width: '100%',fontStyle: 'italic'}}>logged as:  </span>
                           <span style={{fontWeight: 'bold'}}>{LoginAPI.isLogin.user.email.split('@')[0]}</span>
                         </Typography>
-                        <Button style={{margin: '2px auto', color: state.isNightModeOn ? theme.red : theme.red, fontSize: '12px', borderColor: theme.red, width: '50%'}}
+                        <Button style={{margin: '2px auto', color: state.isNightModeOn ? theme.red : theme.red, fontSize: '12px', borderColor: theme.red, width: '40%'}}
                                 variant="outlined"
                                 color='secondary'
                                 onClick={async ()=>{
@@ -120,9 +180,17 @@ const Menu = ({state, setState}) => {
                                     login: false,
                                     user: null
                                   })
+                                  handleShowSnackbar("Successfully logged out", "info");
                                 }}
                         >
                           logout
+                        </Button>
+                        <Button style={{margin: '2px auto', color: state.isNightModeOn ? theme.green : theme.dark, fontSize: '11px', borderColor: state.isNightModeOn ? theme.green : theme.dark, width: '80%'}}
+                                variant="outlined"
+                                color='secondary'
+                                onClick={handlingMargeData}
+                        >
+                          Merge data
                         </Button>
                       </>
                   ) : (
@@ -173,6 +241,16 @@ const Menu = ({state, setState}) => {
           </MenuList>
         </SwipeableDrawer>
         <LoginDialog state={state} isLoginDialogOpen={isLoginDialogOpen} setIsLoginDialogOpen={setIsLoginDialogOpen} />
+        <Snackbar
+            open={isSnackbar.open}
+            autoHideDuration={3000}
+            onClose={handleCloseSnackbar}
+            anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
+        >
+          <Alert severity={isSnackbar.severity} >
+            {isSnackbar.text}
+          </Alert>
+        </Snackbar>
       </>
   );
 

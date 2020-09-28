@@ -112,6 +112,9 @@ const LoginDialog = ({state, isLoginDialogOpen, setIsLoginDialogOpen}) => {
                             loginAPI.setIsLogin({user: response.user, login: true});
                             handleShowSnackbar("Successfully logged in", 'success');
                             await set("jwt", response.jwt)
+                            await set("log", response.user.log);
+                            await set("harborsArray", response.user.harborsArray);
+                            await set("tripsArray", response.user.tripsArray);
                         }
 
                     })
