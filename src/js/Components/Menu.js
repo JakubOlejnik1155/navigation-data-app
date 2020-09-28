@@ -28,6 +28,7 @@ import LoginDialog from "./LoginDialog";
 import {LoginContext} from "../ContextLoginApi";
 import Snackbar from "@material-ui/core/Snackbar";
 import MuiAlert from "@material-ui/lab/Alert";
+import {patchFetchFunction} from "../../data/functions";
 
 function Alert(props) {
   return <MuiAlert elevation={6} variant="filled" {...props} />;
@@ -88,7 +89,7 @@ const Menu = ({state, setState}) => {
     let a = array.concat();
     for(let i=0; i<a.length; ++i) {
       for(let j=i+1; j<a.length; ++j) {
-        if(a[i] === a[j])
+        if(a[i].name === a[j].name)
           a.splice(j--, 1);
       }
     }
@@ -109,7 +110,6 @@ const Menu = ({state, setState}) => {
   }
   const handlingMargeData = async () => {
     const onlineObject = LoginAPI.isLogin.user;
-    console.log(onlineObject);
     let offlineObject = {}, offlineLog, offlineHarborsArray, offlineTripsArray;
     await get("log").then(async value=> {
       offlineLog = value
@@ -131,7 +131,14 @@ const Menu = ({state, setState}) => {
       offlineObject ={...offlineObject, tripsArray: arrayUnique(array)}
       await set("tripsArray", arrayUnique(array))
     });
-    console.log(offlineObject)
+    patchFetchFunction('/',offlineObject).then(res => {
+      if (res.ok){
+        handleShowSnackbar("Successfully merge data" , "success")
+      }
+      else{
+        handleShowSnackbar("Something get wrong" , "error")
+      }
+    })
   }
 
   return (

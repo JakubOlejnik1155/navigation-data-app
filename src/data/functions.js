@@ -26,3 +26,18 @@ export const getFetchFunction = async (concatURL) => {
     })
     return response.json();
 }
+export const patchFetchFunction = async (concatURL, data) => {
+    let response = null;
+    await get("jwt").then(async value => {
+        const options = {
+            method: 'PATCH',
+            headers: {
+                'auth-token': `${value}`,
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(data)
+        };
+        response = await fetch(SERVER.concat(concatURL), options);
+    })
+    return response.json();
+};
