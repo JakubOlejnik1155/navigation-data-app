@@ -118,8 +118,6 @@ const Menu = ({state, setState}) => {
       severity
     })
   }
-  //!something wrong with this function
-  // TODO: fix this issue
   const handlingMargeData = async () => {
     function getUserData () {
       try{
