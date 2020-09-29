@@ -28,7 +28,7 @@ import LoginDialog from "./LoginDialog";
 import {LoginContext} from "../ContextLoginApi";
 import Snackbar from "@material-ui/core/Snackbar";
 import MuiAlert from "@material-ui/lab/Alert";
-import {patchFetchFunction} from "../../data/functions";
+import {getFetchFunction, patchFetchFunction} from "../../data/functions";
 
 function Alert(props) {
   return <MuiAlert elevation={6} variant="filled" {...props} />;
@@ -85,11 +85,21 @@ const Menu = ({state, setState}) => {
   });
 
 
-  const arrayUnique = array => {
+  const HarborsArrayUnique = array => {
     let a = array.concat();
     for(let i=0; i<a.length; ++i) {
       for(let j=i+1; j<a.length; ++j) {
         if(a[i].name === a[j].name)
+          a.splice(j--, 1);
+      }
+    }
+    return a;
+  }
+  const tripsArrayUnique = trip => {
+    let a = trip.concat();
+    for(let i=0; i<a.length; ++i) {
+      for(let j=i+1; j<a.length; ++j) {
+        if(a[i].startTime === a[j].startTime)
           a.splice(j--, 1);
       }
     }
@@ -108,37 +118,53 @@ const Menu = ({state, setState}) => {
       severity
     })
   }
+  //!something wrong with this function
+  // TODO: fix this issue
   const handlingMargeData = async () => {
-    const onlineObject = LoginAPI.isLogin.user;
-    let offlineObject = {}, offlineLog, offlineHarborsArray, offlineTripsArray;
-    await get("log").then(async value=> {
-      offlineLog = value
-      if (offlineLog > onlineObject.log) {
-        offlineObject ={...offlineObject, log: offlineLog}
-      }else {
-        await set("log", onlineObject.log)
+    function getUserData () {
+      try{
+        getFetchFunction('/')
+            .then(async response => {
+              if (response.ok){
+                const onlineObject = response.object;
+                let offlineObject = {}, offlineLog, offlineHarborsArray, offlineTripsArray;
+                await get("log").then(async value=> {
+                  offlineLog = value
+                  if (offlineLog > onlineObject.log) {
+                    offlineObject ={...offlineObject, log: offlineLog}
+                  }else {
+                    offlineObject ={...offlineObject, log: onlineObject.log}
+                    await set("log", onlineObject.log)
+                  }
+                });
+                await get("harborsArray").then( async value => {
+                  offlineHarborsArray = value
+                  const array = onlineObject.harborsArray.concat(offlineHarborsArray)
+                  offlineObject ={...offlineObject, harborsArray: HarborsArrayUnique(array)}
+                  await set("harborsArray", HarborsArrayUnique(array))
+                });
+                await get("tripsArray").then(async value => {
+                  offlineTripsArray = value
+                  const array = onlineObject.tripsArray.concat(offlineTripsArray)
+                  console.log(array);
+                  offlineObject ={...offlineObject, tripsArray: tripsArrayUnique(array)}
+                  await set("tripsArray", tripsArrayUnique(array))
+                });
+                patchFetchFunction('/',offlineObject).then(res => {
+                  if (res.ok){
+                    handleShowSnackbar("Successfully merge data" , "success")
+                  }
+                  else{
+                    handleShowSnackbar("Something get wrong" , "error")
+                  }
+                }).catch(e => console.log(e))
+              }
+            })
+      }catch (e) {
+        console.log(e)
       }
-    });
-    await get("harborsArray").then( async value => {
-      offlineHarborsArray = value
-      const array = onlineObject.harborsArray.concat(offlineHarborsArray)
-      offlineObject ={...offlineObject, harborsArray: arrayUnique(array)}
-      await set("harborsArray", arrayUnique(array))
-    });
-    await get("tripsArray").then(async value => {
-      offlineTripsArray = value
-      const array = onlineObject.tripsArray.concat(offlineTripsArray)
-      offlineObject ={...offlineObject, tripsArray: arrayUnique(array)}
-      await set("tripsArray", arrayUnique(array))
-    });
-    patchFetchFunction('/',offlineObject).then(res => {
-      if (res.ok){
-        handleShowSnackbar("Successfully merge data" , "success")
-      }
-      else{
-        handleShowSnackbar("Something get wrong" , "error")
-      }
-    })
+    }
+    getUserData();
   }
 
   return (
