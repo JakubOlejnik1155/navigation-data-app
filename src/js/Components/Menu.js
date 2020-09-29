@@ -144,7 +144,6 @@ const Menu = ({state, setState}) => {
                 await get("tripsArray").then(async value => {
                   offlineTripsArray = value
                   const array = onlineObject.tripsArray.concat(offlineTripsArray)
-                  console.log(array);
                   offlineObject ={...offlineObject, tripsArray: tripsArrayUnique(array)}
                   await set("tripsArray", tripsArrayUnique(array))
                 });
