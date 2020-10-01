@@ -12,6 +12,7 @@ import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
+import {deleteFetchFunction} from "../../data/functions";
 
 const useStyles = makeStyles(() => ({
     deleteBtn: {
@@ -81,6 +82,10 @@ const Trip = ({ trip, state, setTripsArray }) => {
     const [isDialogOpen, setIsDialogOpen] = React.useState(false)
 
     const deleteTrip = async trip => {
+        if (navigator.onLine){
+            deleteFetchFunction(`/trip/${trip.startTime}`)
+                .then(() =>{})
+        }
         await get("tripsArray").then(async array => {
             let newArray = [];
             for (let i = 0; i < array.length; i++) {
