@@ -17,6 +17,7 @@ import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
+import {deleteFetchFunction} from "../../data/functions";
 
 const OneHarbor = ({ state, harbor, harborArray, setHarborArray}) => {
     const useStyles = makeStyles(() => ({
@@ -54,15 +55,19 @@ const OneHarbor = ({ state, harbor, harborArray, setHarborArray}) => {
         setExpanded(isExpanded ? panel : false);
     };
     const deleteHarbor = async (harbor) => {
-            let newArray = [];
-            for (let i = 0; i < harborArray.length; i++) {
-                const element = harborArray[i];
-                if (element.name !== harbor.name && element.pos !== harbor.pos && element.desc !== harbor.desc) {
-                    newArray.push(element)
-                }
+        if(navigator.onLine){
+            deleteFetchFunction(`/harbor/${harbor.name}`)
+                .then(() => {})
+        }
+        let newArray = [];
+        for (let i = 0; i < harborArray.length; i++) {
+            const element = harborArray[i];
+            if (element.name !== harbor.name && element.pos !== harbor.pos && element.desc !== harbor.desc) {
+                newArray.push(element)
             }
-            await set("harborsArray", newArray)
-            setHarborArray(newArray);
+        }
+        await set("harborsArray", newArray)
+        setHarborArray(newArray);
     }
 
     return (

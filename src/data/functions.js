@@ -1,4 +1,4 @@
-import {SERVER} from './breakpoints';
+import {API, SERVER} from './breakpoints';
 import {get} from "idb-keyval";
 
 
@@ -41,3 +41,16 @@ export const patchFetchFunction = async (concatURL, data) => {
     })
     return response.json();
 };
+export const deleteFetchFunction = async (concatURL) => {
+    let response = null;
+    await get("jwt").then(async value => {
+        const options = {
+            method: 'DELETE',
+            headers: {
+                'auth-token': `${value}`
+            }
+        };
+        response = await fetch(API.concat(concatURL), options);
+    })
+    return response.json();
+}
