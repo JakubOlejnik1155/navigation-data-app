@@ -1,7 +1,5 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
-import { theme } from '../../data/styleThemes';
-import AnchorImage from '../../images/anchor.svg';
 import IconButton from '@material-ui/core/IconButton';
 import MenuRoundedIcon from '@material-ui/icons/MenuRounded';
 import PlayArrowRoundedIcon from '@material-ui/icons/PlayArrowRounded';
@@ -11,6 +9,10 @@ import MuiAlert from '@material-ui/lab/Alert'
 import Snackbar from '@material-ui/core/Snackbar';
 import { set, get } from 'idb-keyval';
 import { getDistance } from 'geolib';
+
+
+import { theme } from '../../data/styleThemes';
+import AnchorImage from '../../images/anchor.svg';
 
 
 const NavigationBar = styled.header`
@@ -32,7 +34,6 @@ const AppName = styled.span`
   font-family: 'Poppins', sans-serif;
   color: ${props => props.isNightModeOn === true ? theme.red : theme.dark}};
 `;
-
 function Alert(props) {
   return <MuiAlert elevation={6} variant="filled" {...props} />;
 }
@@ -110,7 +111,6 @@ const Header = ({ state, setState, setTrip, setDistance, setLog, log}) => {
       }
     }
   };
-
   const GetDistanceFromArray =  (array) =>{
     let distance = 0;
     for( let i = 0 ; i < array.length - 1 ; i++){
@@ -124,7 +124,6 @@ const Header = ({ state, setState, setTrip, setDistance, setLog, log}) => {
     }
     return distance;
   }
-
   const handleEndingTrip = async () => {
     tripObject = {
       ...tripObject,
@@ -148,8 +147,6 @@ const Header = ({ state, setState, setTrip, setDistance, setLog, log}) => {
   const handlePausingTrip = () => {
     navigator.geolocation.clearWatch(watchPositionIdex);
   };
-
-
 
     return (
       <NavigationBar

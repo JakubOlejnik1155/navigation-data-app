@@ -1,10 +1,12 @@
 import React from "react";
 import {GoogleMap, useLoadScript, Marker} from "@react-google-maps/api";
+import styled from 'styled-components';
+
+
 import MapStyles from '../../data/mapStyles/MapStyles';
 import DarkMapStyles from '../../data/mapStyles/DarkMapStyles';
 import Pin from '../../images/maps-and-location.png'
 import NoInternetConnectionIcon from '../../images/no-wifi.svg';
-import styled from 'styled-components'
 import { theme } from '../../data/styleThemes';
 
 
@@ -21,7 +23,6 @@ const mapContainerStyle = {
     height: "250px",
     width: "100%",
 };
-
 const center = {
     lat: 24.932186114629094,
     lng: -45.52104291977667
@@ -39,8 +40,6 @@ export default function AddHarborMap({state, position, setPosition}) {
     const { isLoaded, loadError } = useLoadScript({
         googleMapsApiKey: process.env.REACT_APP_GOOGLE_API_KEY,
     });
-    // const [markers, setMarkers] = React.useState([]);
-
     const onMapClick = React.useCallback((e) => {
         setPosition({
             lat: e.latLng.lat(),
@@ -48,7 +47,6 @@ export default function AddHarborMap({state, position, setPosition}) {
         })
     // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
-
     const mapRef = React.useRef();
     const onMapLoad = React.useCallback((map) => {
         mapRef.current = map;

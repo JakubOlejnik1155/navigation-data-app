@@ -1,17 +1,20 @@
 import React, {useEffect, useState} from 'react';
 import { GoogleMap, useLoadScript, Marker} from '@react-google-maps/api'
-import MapStyles from '../../data/mapStyles/MapStyles';
-import DarkMapStyles from '../../data/mapStyles/DarkMapStyles';
 import Backdrop from '@material-ui/core/Backdrop';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import { makeStyles } from '@material-ui/core';
+import styled from 'styled-components'
+import { get } from 'idb-keyval';
+
+
+import MapStyles from '../../data/mapStyles/MapStyles';
+import DarkMapStyles from '../../data/mapStyles/DarkMapStyles';
 import { theme } from '../../data/styleThemes';
 import SailboatIcon from '../../images/sailboat.svg';
 import DarkSailboatIcon from '../../images/darkmode-sailboat.svg';
-import { get } from 'idb-keyval';
 import Pin from '../../images/maps-and-location.png'
 import NoInternetConnectionIcon from '../../images/no-wifi.svg';
-import styled from 'styled-components'
+
 
 const useStyles = makeStyles(() => ({
     backdrop: {
@@ -30,7 +33,6 @@ const OfflineContainer = styled.div`
     justify-content: center;
     align-items: center;
 `;
-
 const mapContainerStyle = {
     width: '100%',
     height: 'calc(100vh - 40px)',
@@ -52,6 +54,7 @@ const darkOptions = {
     streetViewControl: true,
 }
 
+
 const Map = ({state}) => {
 
     const classes = useStyles();
@@ -60,6 +63,7 @@ const Map = ({state}) => {
     const {isLoaded, loadError} = useLoadScript({
         googleMapsApiKey: process.env.REACT_APP_GOOGLE_API_KEY,
     })
+
     useEffect(()=>{
         async function getHarborArray() {
             await get("harborsArray").then((array) => {
@@ -72,7 +76,6 @@ const Map = ({state}) => {
             a = false;
         }
     },[])
-
     useEffect(()=>{
         if (navigator.geolocation) {
             navigator.geolocation.getCurrentPosition(showPosition, ()=>{

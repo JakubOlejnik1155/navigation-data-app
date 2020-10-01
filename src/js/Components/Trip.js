@@ -1,6 +1,5 @@
 import React from 'react';
 import styled from 'styled-components';
-import { theme } from '../../data/styleThemes';
 import DeleteIcon from '@material-ui/icons/DeleteForeverRounded';
 import Button from '@material-ui/core/Button'
 import IconButton from '@material-ui/core/IconButton';
@@ -12,7 +11,11 @@ import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
+
+
+import { theme } from '../../data/styleThemes';
 import {deleteFetchFunction} from "../../data/functions";
+
 
 const useStyles = makeStyles(() => ({
     deleteBtn: {
@@ -35,8 +38,6 @@ const useStyles = makeStyles(() => ({
         textTransform: 'lowercase'
     }
 }));
-
-
 const TripContainer = styled.div`
     background-color: transparent;
     color: ${props => props.state.isNightModeOn ? theme.red : theme.dark};
@@ -59,7 +60,7 @@ const Distance = styled.span`
     transform: translate(-50%, -50%);
 `;
 function msToTime(milliseconds) {
-    var day, hour, minute, seconds;
+    let day, hour, minute, seconds;
     seconds = Math.floor(milliseconds / 1000);
     minute = Math.floor(seconds / 60);
     seconds = seconds % 60;
@@ -76,8 +77,8 @@ function msToTime(milliseconds) {
 }
 
 
-
 const Trip = ({ trip, state, setTripsArray }) => {
+
     const classes = useStyles();
     const [isDialogOpen, setIsDialogOpen] = React.useState(false)
 
@@ -97,7 +98,6 @@ const Trip = ({ trip, state, setTripsArray }) => {
         })
     }
 
-
     return (
         <>
             <TripContainer state={state}>
@@ -113,7 +113,7 @@ const Trip = ({ trip, state, setTripsArray }) => {
                         show more
                     </Button>
                 </Link>
-                <IconButton aria-label="delete" size="small"className={classes.deleteBtn} onClick={()=>{setIsDialogOpen(true)}}>
+                <IconButton aria-label="delete" size="small" className={classes.deleteBtn} onClick={()=>{setIsDialogOpen(true)}}>
                     <DeleteIcon fontSize="small" className={classes.deleteIcon}/>
                 </IconButton>
             </TripContainer>

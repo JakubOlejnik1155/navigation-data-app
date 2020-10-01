@@ -1,11 +1,14 @@
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
-import { theme } from '../../data/styleThemes';
 import formatcoords from 'formatcoords';
 import Backdrop from '@material-ui/core/Backdrop';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import { makeStyles } from '@material-ui/core/styles';
+
+
+import { theme } from '../../data/styleThemes';
 import Permission from '../../images/shield.svg';
+
 
 const useStyles = makeStyles(() => ({
     backdrop: {
@@ -15,7 +18,6 @@ const useStyles = makeStyles(() => ({
         flexDirection: 'column'
     },
 }));
-
 const Container = styled.div`
     background-color: transparent;
     color: ${props => props.state.isNightModeOn ? theme.red : theme.dark};
@@ -155,6 +157,7 @@ const findMax = array => {
     return max;
 }
 
+
 const GpsData = ({state, trip, distance, log}) => {
 
     const classes = useStyles();
@@ -189,9 +192,6 @@ const GpsData = ({state, trip, distance, log}) => {
            navigator.geolocation.clearWatch(watch);
         })
     },[])
-
-
-
 
     return (
         <Container

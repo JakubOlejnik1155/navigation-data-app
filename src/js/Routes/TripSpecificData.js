@@ -2,9 +2,12 @@ import React from 'react';
 import { get } from 'idb-keyval';
 import {useParams} from 'react-router-dom';
 import styled from 'styled-components';
-import { theme } from '../../data/styleThemes';
 import formatcoords from 'formatcoords';
+
+
+import { theme } from '../../data/styleThemes';
 import SpecificRouteMap from '../Components/SpecificRouteMap';
+
 
 const Container = styled.div`
     background-color: ${(props) => props.state.isNightModeOn === true ? theme.dark : theme.light};

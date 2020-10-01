@@ -1,12 +1,15 @@
 import React, { useState, useEffect } from 'react';
-import NavBar from './js/Components/NavBar';
+import {get} from 'idb-keyval';
 import styled from 'styled-components';
+
+
 import { theme } from './data/styleThemes';
 import AppContent from './js/Routes/AppContent';
-import {get} from 'idb-keyval';
+import NavBar from './js/Components/NavBar';
 import InstallPopupp from './js/Components/InstallPopup';
 import {getFetchFunction} from "./data/functions";
 import {LoginContext} from "./js/ContextLoginApi";
+
 
 const AppContainer = styled.div`
     width: 100%;

@@ -1,6 +1,8 @@
 import { del, get, set } from 'idb-keyval';
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components'
+
+
 import { theme } from '../../data/styleThemes';
 import Logo from '../../images/anchor.svg';
 
@@ -102,8 +104,6 @@ const InstallPopupp = () => {
         })
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
-
-
 
     return (
         <PopupContainer id="btn-container">

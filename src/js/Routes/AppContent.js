@@ -1,6 +1,8 @@
 import React from 'react';
 import styled from 'styled-components';
 import { Switch, Route } from 'react-router';
+
+
 import { theme } from '../../data/styleThemes';
 import GpsData from './GpsData';
 import WeatcherData from './WeatherData';
@@ -9,12 +11,15 @@ import Trips from './Trips';
 import TripSpecificdata from './TripSpecificData'
 import Harbors from './Harbors';
 import Error404 from './Error404';
+
+
 const Container = styled.div`
     background-color: ${props => props.state.isNightModeOn ? theme.dark : theme.light};
     width: 100%;
     min-height: calc(100vh - 40px);
     max-height: calc(100vh - 40px);
 `;
+
 
 const AppContent = ({state, setState, trip, setTrip, distance, log}) => {
 

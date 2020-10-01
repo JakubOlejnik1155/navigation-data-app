@@ -9,17 +9,19 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 import LockOpenRoundedIcon from '@material-ui/icons/LockOpenRounded';
 import AlternateEmailRoundedIcon from '@material-ui/icons/AlternateEmailRounded';
 import Grid from '@material-ui/core/Grid';
-import {theme} from "../../data/styleThemes";
 import {withStyles} from "@material-ui/core";
 import { useForm } from 'react-hook-form';
 import MuiAlert from "@material-ui/lab/Alert";
 import Snackbar from '@material-ui/core/Snackbar';
-import {postFetchFunction} from '../../data/functions';
 import CircularProgress from "@material-ui/core/CircularProgress";
 import Backdrop from "@material-ui/core/Backdrop";
 import {makeStyles} from "@material-ui/core/styles";
-import {LoginContext} from '../ContextLoginApi'
 import {set} from "idb-keyval";
+
+import {theme} from "../../data/styleThemes";
+import {postFetchFunction} from '../../data/functions';
+import {LoginContext} from '../ContextLoginApi'
+
 
 function Alert(props) {
     return <MuiAlert elevation={6} variant="filled" {...props} />;
@@ -34,6 +36,7 @@ const useStyles = makeStyles(() => ({
 }));
 
 const LoginDialog = ({state, isLoginDialogOpen, setIsLoginDialogOpen}) => {
+
     const loginAPI = React.useContext(LoginContext);
     const classes = useStyles();
     const CssTextField = withStyles({
@@ -169,7 +172,6 @@ const LoginDialog = ({state, isLoginDialogOpen, setIsLoginDialogOpen}) => {
             }
         }
     }
-
 
     return(
         <>

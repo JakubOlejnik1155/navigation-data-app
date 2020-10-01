@@ -1,16 +1,19 @@
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
-import { theme } from '../../data/styleThemes';
 import Backdrop from '@material-ui/core/Backdrop';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import { makeStyles, withStyles } from '@material-ui/core/styles';
-import Permission from '../../images/shield.svg';
 import ReplayRoundedIcon from '@material-ui/icons/ReplayRounded';
 import IconButton from '@material-ui/core/IconButton';
-import NoInternetConnectionIcon from '../../images/no-wifi.svg';
-import { set } from 'idb-keyval';
-import WarningIcon from '../../images/warning.svg';
 import { Button, Paper } from '@material-ui/core';
+import { set } from 'idb-keyval';
+
+
+import { theme } from '../../data/styleThemes';
+import Permission from '../../images/shield.svg';
+import NoInternetConnectionIcon from '../../images/no-wifi.svg';
+import WarningIcon from '../../images/warning.svg';
+
 
 const ColorButton = withStyles(() => ({
     root: {
@@ -94,7 +97,6 @@ const DepthContainer = styled.div`
     flex-direction: column;
     justify-content: center;
 `;
-
 const Value = styled.div`
     flex-grow: 1;
     position: relative;

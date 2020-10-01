@@ -1,10 +1,12 @@
 import React from 'react';
 import { GoogleMap, useLoadScript, Marker } from "@react-google-maps/api";
+import styled from 'styled-components';
+
+
 import MapStyles from '../../data/mapStyles/MapStyles';
 import DarkMapStyles from '../../data/mapStyles/DarkMapStyles';
 import Pin from '../../images/maps-and-location.png';
 import NoInternetConnectionIcon from '../../images/no-wifi.svg';
-import styled from 'styled-components'
 import { theme } from '../../data/styleThemes';
 
 
@@ -30,6 +32,7 @@ const darkOptions = {
     disableDefaultUI: true,
 }
 const StaticMap = ({state, harbor}) => {
+
     const { isLoaded, loadError } = useLoadScript({
         googleMapsApiKey: process.env.REACT_APP_GOOGLE_API_KEY,
     });
@@ -40,6 +43,7 @@ const StaticMap = ({state, harbor}) => {
     }, []);
     if (loadError) return "Error";
     if (!isLoaded) return "Loading...";
+
     return (
         <>
             {navigator.onLine ? (

@@ -6,8 +6,6 @@ import AccordionSummary from '@material-ui/core/AccordionSummary';
 import Typography from '@material-ui/core/Typography';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import formatcoords from 'formatcoords';
-import { theme } from '../../data/styleThemes';
-import StaticMap from './StaticMap';
 import DeleteIcon from '@material-ui/icons/DeleteForeverRounded';
 import Button from '@material-ui/core/Button'
 import IconButton from '@material-ui/core/IconButton';
@@ -17,7 +15,12 @@ import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
+
+
+import { theme } from '../../data/styleThemes';
+import StaticMap from './StaticMap';
 import {deleteFetchFunction} from "../../data/functions";
+
 
 const OneHarbor = ({ state, harbor, harborArray, setHarborArray}) => {
     const useStyles = makeStyles(() => ({

@@ -5,6 +5,15 @@ import List from '@material-ui/core/List';
 import Divider from '@material-ui/core/Divider';
 import {del, get, set} from 'idb-keyval';
 import Button from '@material-ui/core/Button';
+import {makeStyles, Typography, withStyles} from '@material-ui/core';
+import ListItem from '@material-ui/core/ListItem';
+import ListItemIcon from '@material-ui/core/ListItemIcon';
+import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
+import ListItemText from '@material-ui/core/ListItemText';
+import Switch from '@material-ui/core/Switch';
+import BrightnessMediumRoundedIcon from '@material-ui/icons/BrightnessMediumRounded';
+import Snackbar from "@material-ui/core/Snackbar";
+import MuiAlert from "@material-ui/lab/Alert";
 
 
 import { theme } from '../../data/styleThemes';
@@ -13,21 +22,11 @@ import BoatIcon from '../../images/boat.png';
 import WeatherIcon from '../../images/wind.png';
 import MapIcon from '../../images/maps-and-location.png';
 import TripIcon from '../../images/track.png';
-import {makeStyles, Typography, withStyles} from '@material-ui/core';
 import Wifi from '../../images/wifi.svg';
 import NoWifi from '../../images/no-wifi.svg';
 import MooringPoint from '../../images/mooring-point.svg';
-
-import ListItem from '@material-ui/core/ListItem';
-import ListItemIcon from '@material-ui/core/ListItemIcon';
-import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
-import ListItemText from '@material-ui/core/ListItemText';
-import Switch from '@material-ui/core/Switch';
-import BrightnessMediumRoundedIcon from '@material-ui/icons/BrightnessMediumRounded';
 import LoginDialog from "./LoginDialog";
 import {LoginContext} from "../ContextLoginApi";
-import Snackbar from "@material-ui/core/Snackbar";
-import MuiAlert from "@material-ui/lab/Alert";
 import {getFetchFunction, patchFetchFunction} from "../../data/functions";
 
 function Alert(props) {
@@ -83,7 +82,6 @@ const Menu = ({state, setState}) => {
     text: '-',
     severity: '',
   });
-
 
   const HarborsArrayUnique = array => {
     let a = array.concat();

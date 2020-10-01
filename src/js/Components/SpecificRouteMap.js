@@ -1,15 +1,17 @@
 import React from 'react';
 import { GoogleMap, useLoadScript, Polyline, Marker} from '@react-google-maps/api'
+import { Link } from 'react-router-dom';
+import ArrowBackIosRoundedIcon from '@material-ui/icons/ArrowBackIosRounded';
+import IconButton from '@material-ui/core/IconButton';
+import styled from 'styled-components';
+
+
 import MapStyles from '../../data/mapStyles/MapStyles';
 import DarkMapStyles from '../../data/mapStyles/DarkMapStyles';
 import SailSVG from '../../images/startTripPin.svg'
 import DockSVG from '../../images/endTripPin.svg'
 import NoInternetConnectionIcon from '../../images/no-wifi.svg';
-import styled from 'styled-components'
 import { theme } from '../../data/styleThemes';
-import { Link } from 'react-router-dom';
-import ArrowBackIosRoundedIcon from '@material-ui/icons/ArrowBackIosRounded';
-import IconButton from '@material-ui/core/IconButton';
 
 
 const OfflineContainer = styled.div`
@@ -21,8 +23,6 @@ const OfflineContainer = styled.div`
     justify-content: center;
     align-items: center;
 `;
-
-
 const mapContainerStyle = {
     width: '100%',
     height: '100%',
@@ -48,8 +48,7 @@ const RouteOptions = {
     radius: 30000,
     zIndex: 1
 }
-
-
+//? center map based on positions
 const centerFromArray = (array) => {
     let lat=0, lng=0;
     array.forEach(element => {
@@ -63,6 +62,7 @@ const centerFromArray = (array) => {
         lng
     }
 }
+//? change array of arrays to array of objects
 const refactorArray = (array) => {
     let newObjectArray = [];
     array.forEach(element => {
@@ -70,7 +70,6 @@ const refactorArray = (array) => {
     })
     return newObjectArray;
 }
-
 
 const SpecificRouteMap = ({state, trip}) => {
     const { isLoaded, loadError } = useLoadScript({

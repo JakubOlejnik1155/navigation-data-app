@@ -1,7 +1,7 @@
 import React from 'react';
 
-export const LoginContext = React.createContext();
 
+export const LoginContext = React.createContext();
 
 export const LoginProvider = (props) => {
     const [isLogin, setIsLogin] = React.useState({

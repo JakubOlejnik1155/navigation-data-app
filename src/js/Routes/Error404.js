@@ -1,8 +1,12 @@
 import React from 'react';
 import styled from 'styled-components';
+import {Link} from 'react-router-dom';
+
+
 import { theme } from '../../data/styleThemes';
 import Cancel from '../../images/cancel.svg';
-import {Link} from 'react-router-dom'
+
+
 const Container = styled.div`
     width: 100%;
     height: calc(100vh - 40px);

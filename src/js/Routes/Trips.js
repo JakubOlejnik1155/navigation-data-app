@@ -1,9 +1,12 @@
 import React, { useEffect } from 'react';
 import { get } from 'idb-keyval';
 import  styled  from 'styled-components';
+
+
 import { theme } from '../../data/styleThemes';
 import SailingSVG from '../../images/sailing.svg';
 import Trip from '../Components/Trip';
+
 
 const TripsContainer = styled.div`
     background-color: transparent;
@@ -32,11 +35,9 @@ const NoRoutesInfo = styled.p`
 `;
 
 
-
 const Trips = ({state}) => {
 
     const [tripsArray, setTripsArray] = React.useState([]);
-
 
     useEffect(()=>{
         async function getTripsArray(){
@@ -50,6 +51,7 @@ const Trips = ({state}) => {
             a = false;
         }
     },[])
+
     return (
         <TripsContainer state={state}>
             {tripsArray && tripsArray.length > 0 ? tripsArray.map(trip => <Trip key={trip.startTime} trip={trip} state={state} setTripsArray={setTripsArray}/>):(

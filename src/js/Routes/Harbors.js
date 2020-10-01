@@ -3,13 +3,14 @@ import { get, set } from 'idb-keyval';
 import Fab from '@material-ui/core/Fab';
 import AddIcon from '@material-ui/icons/Add';
 import styled from 'styled-components';
-import { theme } from '../../data/styleThemes';
 import { makeStyles } from '@material-ui/core/styles';
-import AddHarborDialog from '../Components/AddHarborDialog';
-import OneHarbor from '../Components/OneHarbor';
 import MuiAlert from '@material-ui/lab/Alert';
 import Snackbar from '@material-ui/core/Snackbar';
 
+
+import { theme } from '../../data/styleThemes';
+import AddHarborDialog from '../Components/AddHarborDialog';
+import OneHarbor from '../Components/OneHarbor';
 
 
 const Harborcontainer = styled.div`
@@ -23,6 +24,8 @@ const Harborcontainer = styled.div`
 function Alert(props) {
     return <MuiAlert elevation={6} variant="filled" {...props} />;
 }
+
+
 const Harbors = ({state}) => {
     const useStyles = makeStyles(() => ({
         fab: {
@@ -44,7 +47,6 @@ const Harbors = ({state}) => {
         text: '-',
         severity: 'success',
     });
-
 
     React.useEffect(()=>{
         async function getHarborArray(){
@@ -71,7 +73,6 @@ const Harbors = ({state}) => {
             severity
         })
     }
-
     const addHarbor = async (pos, name, desc) => {
         if(pos===undefined || name ==="") {
             handleShowSnackbar("fill the information to add harbor", "warning");
