@@ -126,7 +126,10 @@ const Menu = ({state, setState}) => {
                 let offlineObject = {}, offlineLog, offlineHarborsArray, offlineTripsArray;
                 await get("log").then(async value=> {
                   offlineLog = value
-                  if (offlineLog > onlineObject.log) {
+                  if(value === undefined){
+                    offlineObject ={...offlineObject, log: onlineObject.log}
+                  }
+                  else if (offlineLog > onlineObject.log) {
                     offlineObject ={...offlineObject, log: offlineLog}
                   }else {
                     offlineObject ={...offlineObject, log: onlineObject.log}
@@ -135,15 +138,23 @@ const Menu = ({state, setState}) => {
                 });
                 await get("harborsArray").then( async value => {
                   offlineHarborsArray = value
-                  const array = onlineObject.harborsArray.concat(offlineHarborsArray)
-                  offlineObject ={...offlineObject, harborsArray: HarborsArrayUnique(array)}
-                  await set("harborsArray", HarborsArrayUnique(array))
+                  if(value === undefined){
+                    offlineObject ={...offlineObject, harborsArray: onlineObject.harborsArray}
+                  }else {
+                    const array = onlineObject.harborsArray.concat(offlineHarborsArray)
+                    offlineObject = {...offlineObject, harborsArray: HarborsArrayUnique(array)}
+                    await set("harborsArray", HarborsArrayUnique(array))
+                  }
                 });
                 await get("tripsArray").then(async value => {
                   offlineTripsArray = value
-                  const array = onlineObject.tripsArray.concat(offlineTripsArray)
-                  offlineObject ={...offlineObject, tripsArray: tripsArrayUnique(array)}
-                  await set("tripsArray", tripsArrayUnique(array))
+                  if(value === undefined){
+                    offlineObject ={...offlineObject, tripsArray: onlineObject.tripsArray}
+                  }else {
+                    const array = onlineObject.tripsArray.concat(offlineTripsArray)
+                    offlineObject = {...offlineObject, tripsArray: tripsArrayUnique(array)}
+                    await set("tripsArray", tripsArrayUnique(array))
+                  }
                 });
                 patchFetchFunction('/',offlineObject).then(res => {
                   if (res.ok){

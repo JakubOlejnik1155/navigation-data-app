@@ -1,3 +1,3 @@
 // TODO: change breakpoints from localhost to ip addres
-export const SERVER = 'http://localhost:3000/api/user';
-export const API = 'http://localhost:3000/api';
+export const SERVER = 'https://jakubolejnik.pl/api/user';
+export const API = 'https://jakubolejnik.pl/api';

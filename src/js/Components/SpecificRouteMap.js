@@ -84,7 +84,7 @@ const SpecificRouteMap = ({state, trip}) => {
             {navigator.onLine ? (
                 <GoogleMap
                     mapContainerStyle={mapContainerStyle}
-                    zoom={6}
+                    zoom={8}
                     center={centerFromArray(trip.coordsArray)}
                     options={state.isNightModeOn ? darkOptions : options}
                 >
